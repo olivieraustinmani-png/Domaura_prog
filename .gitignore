@@ -1,0 +1,42 @@
+# ======================
+# Build / Compilation
+# ======================
+build/
+cmake-build*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.cmake
+
+# ======================
+# Fichiers compilés
+# ======================
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.a
+
+# ======================
+# Logs & temporaires
+# ======================
+*.log
+*.tmp
+*.swp
+
+# ======================
+# IDE / Éditeurs
+# ======================
+.vscode/
+.idea/
+*.user
+*.suo
+
+# ======================
+# OS
+# ======================
+.DS_Store
+Thumbs.db

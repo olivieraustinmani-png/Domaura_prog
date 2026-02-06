@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMI - Immobilier & Art à Yaoundé </title>
+    <style>
+        /* CSS : Le design de ton application */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #f3d709;
+            color: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 50px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            border: none;
+            padding: 10px 20px;
+            width: 300px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding-bottom: 50px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .tag {
+            background: #961212;
+            color: rgb(255, 255, 255);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>DOMI</h1>
+        <nav>
+            <strong>Yaoundé</strong> | Artistes | Agents | Connexion
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Trouvez votre espace, créez votre style.</h1>
+        <p>Le premier marché immobilier et artistique au Cameroun.</p>
+        <div class="search-container">
+            <input type="text" placeholder="Quartier (Bastos, Mendong, Efoulan...)">
+            <button>Rechercher</button>
+        </div>
+    </section>
+
+    <h2 class="section-title">À la une à Yaoundé</h2>
+
+    <div class="container">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60"
+                alt="Studio">
+            <div class="card-content">
+                <span class="tag">Immobilier</span>
+                <h3>Studio Moderne - Bastos</h3>
+                <p>150,000 FCFA / mois</p>
+                <button style="width: 100%;">Visiter en 3D</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60"
+                alt="Tableau">
+            <div class="card-content">
+                <span class="tag" style="background: #8e44ad;">Art Numérique</span>
+                <h3>Tableau "Eclat d'Afrique"</h3>
+                <p>45,000 FCFA</p>
+                <button style="width: 100%;">Acheter l'œuvre</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60"
+                alt="Canapé">
+            <div class="card-content">
+                <span class="tag" style="background: #2c3e50;">Mobilier</span>
+                <h3>Canapé Royal en Bois</h3>
+                <p>250,000 FCFA</p>
+                <button style="width: 100%;">Commander</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Simulation de notre base de données (JSON)
+        const baseDeDonnees = [
+            { titre: "Studio Moderne - Bastos", prix: "150,000 FCFA", categorie: "Immobilier", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60" },
+            { titre: "Tableau Eclat d'Afrique", prix: "45,000 FCFA", categorie: "Art Numérique", image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60" },
+            { titre: "Canapé Royal - Mendong", prix: "250,000 FCFA", categorie: "Mobilier", image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60" }
+        ];
+
+        // 2. Sélection des éléments HTML
+        const inputRecherche = document.querySelector('input');
+        const boutonRecherche = document.querySelector('button');
+        const container = document.querySelector('.container');
+
+        // 3. Fonction de recherche
+        boutonRecherche.addEventListener('click', () => {
+            const texte = inputRecherche.value.toLowerCase();
+
+            // Vider le container pour réafficher les résultats filtrés
+            container.innerHTML = "";
+
+            const resultats = baseDeDonnees.filter(item =>
+                item.titre.toLowerCase().includes(texte)
+            );
+
+            // Afficher les résultats
+            resultats.forEach(item => {
+                container.innerHTML += `
+                    <div class="card">
+                        <img src="${item.image}" alt="${item.titre}">
+                        <div class="card-content">
+                            <span class="tag">${item.categorie}</span>
+                            <h3>${item.titre}</h3>
+                            <p>${item.prix}</p>
+                            <button style="width: 100%;">Voir détails</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (resultats.length === 0) {
+                container.innerHTML = "<p>Aucun résultat trouvé pour cette zone.</p>";
+            }
+        });
+    </script>
+
+</body>
+
+=======
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMI - Immobilier & Art à Yaoundé</title>
+    <style>
+        /* CSS : Le design de ton application */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 50px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            border: none;
+            padding: 10px 20px;
+            width: 300px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding-bottom: 50px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .tag {
+            background: #c12222;
+            color: rgb(255, 255, 255);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>DOMI</h1>
+        <nav>
+            <strong>Yaoundé</strong> | Artistes | Agents | Connexion
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Trouvez votre espace, créez votre style.</h1>
+        <p>Le premier marché immobilier et artistique au Cameroun.</p>
+        <div class="search-container">
+            <input type="text" placeholder="Quartier (Bastos, Mendong, Efoulan...)">
+            <button>Rechercher</button>
+        </div>
+    </section>
+
+    <h2 class="section-title">À la une à Yaoundé</h2>
+
+    <div class="container">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60"
+                alt="Studio">
+            <div class="card-content">
+                <span class="tag">Immobilier</span>
+                <h3>Studio Moderne - Bastos</h3>
+                <p>150,000 FCFA / mois</p>
+                <button style="width: 100%;">Visiter en 3D</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60"
+                alt="Tableau">
+            <div class="card-content">
+                <span class="tag" style="background: #8e44ad;">Art Numérique</span>
+                <h3>Tableau "Eclat d'Afrique"</h3>
+                <p>45,000 FCFA</p>
+                <button style="width: 100%;">Acheter l'œuvre</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60"
+                alt="Canapé">
+            <div class="card-content">
+                <span class="tag" style="background: #2c3e50;">Mobilier</span>
+                <h3>Canapé Royal en Bois</h3>
+                <p>250,000 FCFA</p>
+                <button style="width: 100%;">Commander</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Simulation de notre base de données (JSON)
+        const baseDeDonnees = [
+            { titre: "Studio Moderne - Bastos", prix: "150,000 FCFA", categorie: "Immobilier", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60" },
+            { titre: "Tableau Eclat d'Afrique", prix: "45,000 FCFA", categorie: "Art Numérique", image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60" },
+            { titre: "Canapé Royal - Mendong", prix: "250,000 FCFA", categorie: "Mobilier", image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60" }
+        ];
+
+        // 2. Sélection des éléments HTML
+        const inputRecherche = document.querySelector('input');
+        const boutonRecherche = document.querySelector('button');
+        const container = document.querySelector('.container');
+
+        // 3. Fonction de recherche
+        boutonRecherche.addEventListener('click', () => {
+            const texte = inputRecherche.value.toLowerCase();
+
+            // Vider le container pour réafficher les résultats filtrés
+            container.innerHTML = "";
+
+            const resultats = baseDeDonnees.filter(item =>
+                item.titre.toLowerCase().includes(texte)
+            );
+
+            // Afficher les résultats
+            resultats.forEach(item => {
+                container.innerHTML += `
+                    <div class="card">
+                        <img src="${item.image}" alt="${item.titre}">
+                        <div class="card-content">
+                            <span class="tag">${item.categorie}</span>
+                            <h3>${item.titre}</h3>
+                            <p>${item.prix}</p>
+                            <button style="width: 100%;">Voir détails</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (resultats.length === 0) {
+                container.innerHTML = "<p>Aucun résultat trouvé pour cette zone.</p>";
+            }
+        });
+    </script>
+
+</body>
+
+( DOMI: Votre satisfaction, notre Combat!)
+
+</html>

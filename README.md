@@ -45,11 +45,45 @@ Pour tester le projet sur votre machine :
     ```
 3.  Lancer `index.html` dans votre navigateur.
 
+## 📑 Rapport d'Avancement :
+ ### Projet DOMI / AURAStatut :
+  Prototype Fonctionnel (MVP - Minimum Viable Product)
+  Développeur : 
+  
+  *Olivier Austin ManiTechnologies* : Stack Web Standard (HTML5, CSS3, JS ES6+)1. Fondations de l'Infrastructure.
+  
+  Nous avons quitté le simple codage local pour une structure d'ingénierie logicielle robuste :Contrôle de version : Utilisation de Git pour l'historique des modifications (Commits).
+  
+  Stockage Distant : Repository configuré sur GitHub avec gestion des accès et licences.
+  
+  Déploiement (Cloud) : Mise en service de GitHub Pages, rendant l'application accessible via une URL publique.2. 
+  
+  État des Fonctionnalités (Backend & Logique) Le "cerveau" de l'application est opérationnel :Base de Données Simulée : Structure JSON intégrée contenant les métadonnées (titres, prix, catégories, images).Algorithme de Recherche : Système de filtrage par mots-clés (insensible à la casse) avec mise à jour instantanée du DOM. 
+  
+  Filtrage par Catégorie : Logique JavaScript permettant de basculer entre l'univers DOMI (Logement) et l'univers AURA (Art).3. 
+  
+  État du Frontend (Interface Utilisateur) L'interface a été pensée pour la mobilité et la clarté :Grille Adaptative : Utilisation de CSS Grid pour un affichage en cartes professionnelles.
+  
+  Responsive Design : Adaptation automatique aux écrans de smartphones (crucial pour le marché camerounais).Navigation Intuitive : Barre de recherche et boutons de filtres rapides.📈 Bilan de ProgressionModuleÉtatNiveau de complétionStructure
+  
+  ````
+   HTML✅
+
+ Terminé 100% Moteur de recherche✅
+ 
+ Fonctionne l90% Gestion Git/GitHub✅
+  
+ Configuré 100% Design CSS (AURA Style)🚧
+   
+ En cours 60% Base de données réelle📅
+ 
+  À venir0%
+ ````
 ---
 
 ## 👨‍💻 Auteur
 **Olivier Austin Mani** - Élève Ingénieur à l'ENSPY.
-*Projet réalisé dans le cadre du cours d'Art Numérique (2026).*
+*Projet réalisé dans le cadre personnel (2026).*
 
 ---
 © 2026 - DOMI / AURA Project - Sous licence MIT.

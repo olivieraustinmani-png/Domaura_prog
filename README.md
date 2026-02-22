@@ -57,9 +57,9 @@ Pour tester le projet sur votre machine :
   Stockage Distant : Repository configuré sur GitHub avec gestion des accès et licences.
   
   Déploiement (Cloud) : Mise en service de GitHub Pages, rendant l'application accessible via une URL publique.2. 
-  
+
   État des Fonctionnalités (Backend & Logique) Le "cerveau" de l'application est opérationnel :Base de Données Simulée : Structure JSON intégrée contenant les métadonnées (titres, prix, catégories, images).Algorithme de Recherche : Système de filtrage par mots-clés (insensible à la casse) avec mise à jour instantanée du DOM. 
-  
+
   Filtrage par Catégorie : Logique JavaScript permettant de basculer entre l'univers DOMI (Logement) et l'univers AURA (Art).3. 
   
   État du Frontend (Interface Utilisateur) L'interface a été pensée pour la mobilité et la clarté :Grille Adaptative : Utilisation de CSS Grid pour un affichage en cartes professionnelles.

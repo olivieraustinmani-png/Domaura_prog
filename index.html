@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DOMI / AURA - Immobilier & Art</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -26,11 +24,10 @@
         }
 
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                url('https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&w=1000&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&w=1000&q=80');
             background-size: cover;
             background-position: center;
-            height: 40vh;
+            height: 30vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,26 +53,13 @@
             font-size: 16px;
         }
 
-        .filters {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .filter-btn {
-            padding: 10px 20px;
-            margin: 5px;
-            border: none;
-            border-radius: 30px;
+        .admin-panel {
             background: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 600;
-        }
-
-        .filter-btn:hover {
-            background: #6c5ce7;
-            color: white;
+            padding: 20px;
+            width: 90%;
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .container {
@@ -95,27 +79,14 @@
             transition: 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
         .card img {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
         }
 
         .card-content {
             padding: 20px;
-        }
-
-        .tag {
-            background: #6c5ce7;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
         }
 
         .whatsapp-btn {
@@ -127,12 +98,15 @@
             border-radius: 12px;
             text-decoration: none;
             font-weight: bold;
-            margin-top: 15px;
-            transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .whatsapp-btn:hover {
-            background-color: #128C7E;
+        .tag {
+            background: #6c5ce7;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -141,95 +115,89 @@
 
     <header>
         <h1>DOMI / AURA</h1>
-        <nav>Yaoundé | Artistes | Contact</nav>
+        <nav>Yaoundé | Live Cloud</nav>
     </header>
 
     <section class="hero">
-        <h1>L'immobilier rencontre l'Art.</h1>
+        <h1>Ajoutez et visualisez en temps réel</h1>
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Rechercher un quartier ou une œuvre...">
-            <button onclick="rechercher()"
-                style="background:none; border:none; cursor:pointer; font-size:20px;">🔍</button>
+            <input type="text" id="searchInput" placeholder="Rechercher...">
         </div>
     </section>
 
-    <div class="filters">
-        <button class="filter-btn" onclick="filtrer('tous')">Tout</button>
-        <button class="filter-btn" onclick="filtrer('Immobilier')">🏠 Immobilier</button>
-        <button class="filter-btn" onclick="filtrer('Art Numérique')">🎨 Art</button>
+    <div class="admin-panel">
+        <h3>➕ Publier une annonce (Cloud)</h3>
+        <input type="text" id="newTitre" placeholder="Titre">
+        <input type="text" id="newPrix" placeholder="Prix (ex: 50,000 FCFA)">
+        <input type="text" id="newImg" placeholder="Lien image Unsplash">
+        <button onclick="ajouterAnnonce()"
+            style="background:#f3d709; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold;">Publier</button>
     </div>
 
-    <div class="container" id="annoncesContainer">
-    </div>
+    <div class="container" id="annoncesContainer"></div>
 
-    <script>
-        // Remplace '2376XXXXXXXX' par ton vrai numéro (ex: 237699999999)
-        const monNumero = "237692638631";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const baseDeDonnees = [
-            {
-                titre: "Studio Moderne - Bastos",
-                prix: "150,000 FCFA",
-                categorie: "Immobilier",
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                titre: "Tableau Eclat d'Afrique",
-                prix: "45,000 FCFA",
-                categorie: "Art Numérique",
-                image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                titre: "Canapé Royal - Mendong",
-                prix: "250,000 FCFA",
-                categorie: "Mobilier",
-                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60"
-            }
-        ];
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-AUuHUKSd-keTmcLMGiWEWNoeFTANRaQ",
+            authDomain: "domaura-7052e.firebaseapp.com",
+            projectId: "domaura-7052e",
+            storageBucket: "domaura-7052e.firebasestorage.app",
+            messagingSenderId: "159613937767",
+            appId: "1:159613937767:web:986b32540f4edf5a068cc2"
+        };
 
-        function afficher(data) {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const colRef = collection(db, "annonces");
+
+        // Fonction pour afficher
+        window.afficher = (data) => {
             const container = document.getElementById('annoncesContainer');
-            container.innerHTML = ""; // On vide le container
+            container.innerHTML = data.map(item => `
+            <div class="card">
+                <img src="${item.image}" alt="${item.titre}">
+                <div class="card-content">
+                    <span class="tag">Annonce Cloud</span>
+                    <h3>${item.titre}</h3>
+                    <p><strong>${item.prix}</strong></p>
+                    <a href="https://wa.me/237692638631?text=Interessé par ${encodeURIComponent(item.titre)}" target="_blank" class="whatsapp-btn">
+                        Contacter WhatsApp
+                    </a>
+                </div>
+            </div>
+        `).join('');
+        };
 
-            data.forEach(item => {
-                const message = `Bonjour DOMI/AURA, je suis intéressé par : ${item.titre} (${item.prix})`;
-                const lienWA = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
+        // Ajouter une annonce
+        window.ajouterAnnonce = async () => {
+            const titre = document.getElementById('newTitre').value;
+            const prix = document.getElementById('newPrix').value;
+            const image = document.getElementById('newImg').value;
 
-                container.innerHTML += `
-                    <div class="card">
-                        <img src="${item.image}" alt="${item.titre}">
-                        <div class="card-content">
-                            <span class="tag">${item.categorie}</span>
-                            <h3>${item.titre}</h3>
-                            <p><strong>${item.prix}</strong></p>
-                            <a href="${lienWA}" target="_blank" class="whatsapp-btn">
-                                📱 Contacter sur WhatsApp
-                            </a>
-                        </div>
-                    </div>
-                `;
+            if (!titre || !prix || !image) return alert("Remplis tout !");
+
+            await addDoc(colRef, {
+                titre, prix, image,
+                createdAt: new Date()
             });
 
-            if (data.length === 0) {
-                container.innerHTML = "<p>Aucun résultat trouvé.</p>";
-            }
-        }
+            document.getElementById('newTitre').value = "";
+            document.getElementById('newPrix').value = "";
+            document.getElementById('newImg').value = "";
+        };
 
-        function rechercher() {
-            const texte = document.getElementById('searchInput').value.toLowerCase();
-            const resultats = baseDeDonnees.filter(i => i.titre.toLowerCase().includes(texte));
-            afficher(resultats);
-        }
-
-        function filtrer(cat) {
-            if (cat === 'tous') return afficher(baseDeDonnees);
-            const resultats = baseDeDonnees.filter(i => i.categorie === cat);
-            afficher(resultats);
-        }
-
-        // LANCEMENT INITIAL
-        afficher(baseDeDonnees);
+        // Lecture en temps réel
+        const q = query(colRef, orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            let docs = [];
+            snapshot.docs.forEach(doc => docs.push({ ...doc.data(), id: doc.id }));
+            afficher(docs);
+        });
     </script>
+
 </body>
 
 </html>

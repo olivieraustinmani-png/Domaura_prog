@@ -4,26 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOMI - Immobilier & Art à Yaoundé</title>
+    <title>DOMI / AURA - Immobilier & Art</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS : Design Moderne & Professionnel */
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             background-color: #f8f9fa;
-            color: #2d3436;
+            color: #333;
         }
 
         header {
-            background-color: #2c3e50;
-            color: white;
+            background-color: #f3d709;
             padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .hero {
@@ -31,87 +30,73 @@
                 url('https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?auto=format&fit=crop&w=1000&q=80');
             background-size: cover;
             background-position: center;
-            height: 50vh;
+            height: 40vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
             text-align: center;
-            padding: 0 20px;
         }
 
         .search-container {
             background: white;
             padding: 10px 20px;
             border-radius: 50px;
-            margin-top: 25px;
+            margin-top: 20px;
             display: flex;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         input {
             border: none;
-            padding: 12px;
+            padding: 10px;
             width: 250px;
             outline: none;
             font-size: 16px;
-            font-family: 'Poppins', sans-serif;
         }
 
-        /* Boutons de filtres */
         .filters {
-            margin: 30px 0;
             text-align: center;
+            margin: 30px 0;
         }
 
         .filter-btn {
-            background: white;
-            color: #2c3e50;
-            border: 1px solid #ddd;
-            padding: 8px 20px;
+            padding: 10px 20px;
             margin: 5px;
-            border-radius: 25px;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            font-weight: 600;
         }
 
-        .filter-btn:hover,
-        .filter-btn.active {
-            background-color: #e67e22;
+        .filter-btn:hover {
+            background: #6c5ce7;
             color: white;
-            border-color: #e67e22;
-            transform: translateY(-2px);
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 30px;
         }
 
         .container {
             width: 90%;
             margin: auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
             padding-bottom: 50px;
         }
 
-        /* Cartes Premium */
         .card {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
         .card img {
@@ -125,44 +110,29 @@
         }
 
         .tag {
-            background: #e67e22;
+            background: #6c5ce7;
             color: white;
-            padding: 4px 12px;
+            padding: 5px 15px;
             border-radius: 20px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        .price {
-            color: #2c3e50;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin: 10px 0;
-        }
-
-        .btn-action {
-            background-color: #2c3e50;
+        .whatsapp-btn {
+            display: block;
+            background-color: #25D366;
             color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .btn-action:hover {
-            background-color: #34495e;
-        }
-
-        footer {
             text-align: center;
-            padding: 40px;
-            background: #2c3e50;
-            color: white;
-            margin-top: 50px;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
         }
     </style>
 </head>
@@ -170,87 +140,94 @@
 <body>
 
     <header>
-        <h1>DOMI</h1>
-        <nav>
-            <strong>Yaoundé</strong> | Artistes | Agents
-        </nav>
+        <h1>DOMI / AURA</h1>
+        <nav>Yaoundé | Artistes | Contact</nav>
     </header>
 
     <section class="hero">
-        <h1>Trouvez votre espace, créez votre style.</h1>
-        <p>Le premier marché immobilier et artistique au Cameroun.</p>
+        <h1>L'immobilier rencontre l'Art.</h1>
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Quartier ou type d'art...">
+            <input type="text" id="searchInput" placeholder="Rechercher un quartier ou une œuvre...">
             <button onclick="rechercher()"
-                style="background:#e67e22; border-radius: 50px; padding: 10px 25px; border:none; color:white; font-weight:bold; cursor:pointer;">Rechercher</button>
+                style="background:none; border:none; cursor:pointer; font-size:20px;">🔍</button>
         </div>
     </section>
 
     <div class="filters">
         <button class="filter-btn" onclick="filtrer('tous')">Tout</button>
         <button class="filter-btn" onclick="filtrer('Immobilier')">🏠 Immobilier</button>
-        <button class="filter-btn" onclick="filtrer('Art Numérique')">🎨 Art Numérique</button>
-        <button class="filter-btn" onclick="filtrer('Mobilier')">🪑 Mobilier</button>
+        <button class="filter-btn" onclick="filtrer('Art Numérique')">🎨 Art</button>
     </div>
 
-    <h2 class="section-title">À la une à Yaoundé</h2>
-
-    <div class="container" id="resultContainer">
+    <div class="container" id="annoncesContainer">
     </div>
-
-    <footer>
-        <p><strong>DOMI : Votre satisfaction, notre Combat !</strong></p>
-        <p>© 2026 Projet AURA - Yaoundé, Cameroun</p>
-    </footer>
 
     <script>
+        // Remplace '2376XXXXXXXX' par ton vrai numéro (ex: 237699999999)
+        const monNumero = "237692638631";
+
         const baseDeDonnees = [
-            { titre: "Studio Moderne - Bastos", prix: "150,000 FCFA / mois", categorie: "Immobilier", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60" },
-            { titre: "Tableau Eclat d'Afrique", prix: "45,000 FCFA", categorie: "Art Numérique", image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60" },
-            { titre: "Canapé Royal - Mendong", prix: "250,000 FCFA", categorie: "Mobilier", image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60" }
+            {
+                titre: "Studio Moderne - Bastos",
+                prix: "150,000 FCFA",
+                categorie: "Immobilier",
+                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                titre: "Tableau Eclat d'Afrique",
+                prix: "45,000 FCFA",
+                categorie: "Art Numérique",
+                image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                titre: "Canapé Royal - Mendong",
+                prix: "250,000 FCFA",
+                categorie: "Mobilier",
+                image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=500&q=60"
+            }
         ];
 
-        function afficher(items) {
-            const container = document.getElementById('resultContainer');
-            container.innerHTML = "";
+        function afficher(data) {
+            const container = document.getElementById('annoncesContainer');
+            container.innerHTML = ""; // On vide le container
 
-            items.forEach(item => {
+            data.forEach(item => {
+                const message = `Bonjour DOMI/AURA, je suis intéressé par : ${item.titre} (${item.prix})`;
+                const lienWA = `https://wa.me/${monNumero}?text=${encodeURIComponent(message)}`;
+
                 container.innerHTML += `
                     <div class="card">
                         <img src="${item.image}" alt="${item.titre}">
                         <div class="card-content">
                             <span class="tag">${item.categorie}</span>
                             <h3>${item.titre}</h3>
-                            <p class="price">${item.prix}</p>
-                            <button class="btn-action">En savoir plus</button>
+                            <p><strong>${item.prix}</strong></p>
+                            <a href="${lienWA}" target="_blank" class="whatsapp-btn">
+                                📱 Contacter sur WhatsApp
+                            </a>
                         </div>
                     </div>
                 `;
             });
 
-            if (items.length === 0) {
-                container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>Aucun résultat trouvé.</p>";
+            if (data.length === 0) {
+                container.innerHTML = "<p>Aucun résultat trouvé.</p>";
             }
         }
 
         function rechercher() {
             const texte = document.getElementById('searchInput').value.toLowerCase();
-            const resultats = baseDeDonnees.filter(item =>
-                item.titre.toLowerCase().includes(texte) || item.categorie.toLowerCase().includes(texte)
-            );
+            const resultats = baseDeDonnees.filter(i => i.titre.toLowerCase().includes(texte));
             afficher(resultats);
         }
 
         function filtrer(cat) {
-            if (cat === 'tous') {
-                afficher(baseDeDonnees);
-            } else {
-                const resultats = baseDeDonnees.filter(item => item.categorie === cat);
-                afficher(resultats);
-            }
+            if (cat === 'tous') return afficher(baseDeDonnees);
+            const resultats = baseDeDonnees.filter(i => i.categorie === cat);
+            afficher(resultats);
         }
 
-        // Affichage initial
+        // LANCEMENT INITIAL
         afficher(baseDeDonnees);
     </script>
 </body>

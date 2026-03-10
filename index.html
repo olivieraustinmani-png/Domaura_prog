@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOMAURA - Connexion Multi-Accès</title>
+    <title>DOMAURA - Plateforme Immobilière</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #f3d709;
             --dark: #2d3436;
             --light: #f8f9fa;
-            --google: #4285F4;
-            --phone: #34ace0;
+            --success: #25D366;
         }
 
         body {
@@ -28,80 +27,123 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Barre de Recherche/Filtre */
+        .search-bar {
+            background: white;
+            padding: 15px 5%;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar select,
+        .search-bar input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .container {
+            width: 95%;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Carte Annonce */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .price {
+            color: #e67e22;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .location {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Bouton WhatsApp */
+        .btn-whatsapp {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        /* Favoris ❤️ */
+        .fav-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .auth-container {
-            max-width: 400px;
+            max-width: 500px;
             margin: 20px auto;
             background: white;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: var(--primary);
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-            font-family: inherit;
-        }
-
-        .btn-google {
-            background: var(--google);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn-phone {
-            background: var(--phone);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .divider {
-            margin: 25px 0;
-            border-bottom: 1px solid #eee;
-            position: relative;
-        }
-
-        .divider span {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0 10px;
-            font-size: 0.8rem;
-            color: #999;
         }
 
         .section {
             display: none;
-            padding: 20px;
         }
 
         .section.active {
@@ -112,31 +154,14 @@
             display: none;
         }
 
-        #recaptcha-container {
-            margin: 10px 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 95%;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .card img {
+        .btn {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -144,12 +169,28 @@
 <body>
 
     <header>
-        <h1>DOMAURA</h1>
+        <h1 style="margin:0; font-size: 1.5rem;">DOMAURA</h1>
         <div id="userStatus" style="font-size: 0.8rem; font-weight: bold;">Visiteur</div>
     </header>
 
-    <div
-        style="display:flex; justify-content:center; gap:20px; background:white; padding:10px; border-bottom: 1px solid #eee;">
+    <div class="search-bar">
+        <input type="text" id="filterTitle" placeholder="Rechercher..." oninput="filterAds()">
+        <select id="filterType" onchange="filterAds()">
+            <option value="">Tous les types</option>
+            <option value="Studio">Studio</option>
+            <option value="Appartement">Appartement</option>
+            <option value="Villa">Villa</option>
+            <option value="Terrain">Terrain</option>
+        </select>
+        <select id="filterCity" onchange="filterAds()">
+            <option value="">Toutes les villes</option>
+            <option value="Yaoundé">Yaoundé</option>
+            <option value="Douala">Douala</option>
+            <option value="Kribi">Kribi</option>
+        </select>
+    </div>
+
+    <div style="display:flex; justify-content:center; gap:20px; padding:10px;">
         <button onclick="showSec('secExplorer')"
             style="border:none; background:none; font-weight:600; cursor:pointer;">🏠 Explorer</button>
         <button onclick="showSec('secEspace')" style="border:none; background:none; font-weight:600; cursor:pointer;">👤
@@ -161,57 +202,40 @@
     </section>
 
     <section id="secEspace" class="section">
-
-        <div id="authChoice" class="auth-container">
-            <h3>Bienvenue sur DOMAURA</h3>
-            <p style="font-size: 0.85rem; color: #666;">Choisissez un mode de connexion</p>
-
-            <button class="btn btn-google" onclick="loginWithGoogle()">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Continuer avec
-                Google
-            </button>
-
-            <button class="btn btn-phone" onclick="showPhoneInput()">
-                📱 Utiliser mon n° de téléphone
-            </button>
-
-            <div class="divider"><span>OU</span></div>
-
+        <div id="authZone" class="auth-container">
+            <h3>Connexion</h3>
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="password" placeholder="Mot de passe">
-            <button class="btn" onclick="loginWithEmail()">Se connecter avec l'Email</button>
+            <button class="btn" onclick="login()">Se connecter / S'inscrire</button>
         </div>
 
-        <div id="phoneInputZone" class="auth-container hidden">
-            <h3>Connexion Téléphone</h3>
-            <input type="text" id="phoneNumber" placeholder="+237XXXXXXXXX">
-            <div id="recaptcha-container"></div>
-            <button class="btn" onclick="sendOtp()">Recevoir le code SMS</button>
-
-            <div id="otpZone" class="hidden">
-                <input type="text" id="otpCode" placeholder="Code reçu par SMS" style="margin-top:15px;">
-                <button class="btn" onclick="verifyOtp()">Valider le code</button>
-            </div>
-            <button onclick="location.reload()"
-                style="background:none; border:none; color:grey; margin-top:10px; cursor:pointer;">← Retour</button>
-        </div>
-
-        <div id="dashboard" class="auth-container hidden" style="max-width:600px;">
-            <h3>Publier une annonce</h3>
-            <input type="text" id="title" placeholder="Titre">
-            <input type="text" id="price" placeholder="Prix">
+        <div id="dashboard" class="auth-container hidden">
+            <h3>Publier un bien</h3>
+            <input type="text" id="title" placeholder="Titre de l'annonce">
+            <select id="type">
+                <option value="Studio">Studio</option>
+                <option value="Appartement">Appartement</option>
+                <option value="Villa">Villa</option>
+                <option value="Terrain">Terrain</option>
+            </select>
+            <select id="city">
+                <option value="Yaoundé">Yaoundé</option>
+                <option value="Douala">Douala</option>
+            </select>
+            <input type="text" id="neighborhood" placeholder="Quartier (ex: Bastos)">
+            <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA)">
+            <input type="text" id="whatsapp" placeholder="N° WhatsApp (ex: 2376XXXXXXXX)">
             <input type="file" id="imageFile">
-            <button class="btn" onclick="publishAd()">Mettre en ligne</button>
-            <hr style="margin:20px 0; opacity:0.2;">
+            <button class="btn" id="btnPublish" onclick="publishAd()">Mettre en ligne</button>
+            <hr>
             <button onclick="logout()"
-                style="color:red; background:none; border:none; cursor:pointer; font-weight:bold;">Déconnexion</button>
+                style="color:red; background:none; border:none; cursor:pointer;">Déconnexion</button>
         </div>
-
     </section>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -226,82 +250,99 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        let confirmationResult = null;
+        let allAds = [];
 
         window.showSec = (id) => {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         };
 
-        // --- GOOGLE ---
-        window.loginWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
-
-        // --- EMAIL ---
-        window.loginWithEmail = async () => {
+        // --- AUTHENTIFICATION ---
+        window.login = async () => {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
             try { await signInWithEmailAndPassword(auth, e, p); }
             catch { await createUserWithEmailAndPassword(auth, e, p); }
         };
 
-        // --- TELEPHONE ---
-        window.showPhoneInput = () => {
-            document.getElementById('authChoice').classList.add('hidden');
-            document.getElementById('phoneInputZone').classList.remove('hidden');
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
-        };
-
-        window.sendOtp = async () => {
-            const num = document.getElementById('phoneNumber').value;
-            confirmationResult = await signInWithPhoneNumber(auth, num, window.recaptchaVerifier);
-            document.getElementById('otpZone').classList.remove('hidden');
-            alert("SMS envoyé !");
-        };
-
-        window.verifyOtp = async () => {
-            const code = document.getElementById('otpCode').value;
-            await confirmationResult.confirm(code);
-            alert("Connecté !");
-        };
-
-        // --- ETAT USER ---
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('userStatus').innerText = user.phoneNumber || user.email || "Utilisateur Google";
-                document.getElementById('authChoice').classList.add('hidden');
-                document.getElementById('phoneInputZone').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-            } else {
-                document.getElementById('userStatus').innerText = "Visiteur";
-                document.getElementById('authChoice').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
-            }
+            document.getElementById('userStatus').innerText = user ? user.email : "Visiteur";
+            document.getElementById('authZone').classList.toggle('hidden', user);
+            document.getElementById('dashboard').classList.toggle('hidden', !user);
         });
 
         window.logout = () => signOut(auth);
 
-        // --- PUBLICATION ---
+        // --- PUBLICATION AVEC QUARTIER ET WHATSAPP ---
         window.publishAd = async () => {
-            const t = document.getElementById('title').value;
-            const p = document.getElementById('price').value;
-            const f = document.getElementById('imageFile').files[0];
-            if (!t || !p || !f) return alert("Remplissez tout");
+            const btn = document.getElementById('btnPublish');
+            const data = {
+                titre: document.getElementById('title').value,
+                type: document.getElementById('type').value,
+                ville: document.getElementById('city').value,
+                quartier: document.getElementById('neighborhood').value,
+                prix: document.getElementById('price').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                file: document.getElementById('imageFile').files[0]
+            };
 
-            const fd = new FormData(); fd.append("image", f);
+            if (!data.titre || !data.file || !data.whatsapp) return alert("Remplissez tout !");
+
+            btn.disabled = true; btn.innerText = "Chargement...";
+
+            const fd = new FormData(); fd.append("image", data.file);
             const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", { method: "POST", body: fd });
             const img = await res.json();
 
-            await addDoc(collection(db, "annonces"), { titre: t, prix: p, image: img.data.url, createdAt: new Date(), uid: auth.currentUser.uid });
+            await addDoc(collection(db, "annonces"), {
+                ...data,
+                image: img.data.url,
+                file: null, // On ne stocke pas le fichier brut
+                createdAt: new Date(),
+                uid: auth.currentUser.uid
+            });
+
             alert("Annonce publiée !");
+            location.reload();
         };
 
+        // --- AFFICHAGE ET FILTRAGE ---
         onSnapshot(query(collection(db, "annonces"), orderBy("createdAt", "desc")), (snap) => {
-            document.getElementById('publicAds').innerHTML = snap.docs.map(d => `
-                <div class="card">
-                    <img src="${d.data().image}">
-                    <div style="padding:15px"><h3>${d.data().titre}</h3><p><strong>${d.data().prix}</strong></p></div>
-                </div>`).join('');
+            allAds = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderAds(allAds);
         });
+
+        function renderAds(ads) {
+            document.getElementById('publicAds').innerHTML = ads.map(ad => `
+                <div class="card">
+                    <button class="fav-btn" onclick="toggleFav('${ad.id}')">🤍</button>
+                    <img src="${ad.image}" onclick="alert('Détails : ${ad.titre}\\nQuartier: ${ad.quartier}')">
+                    <div class="card-content">
+                        <div class="price">${ad.prix}</div>
+                        <h3 style="margin:5px 0">${ad.titre}</h3>
+                        <div class="location">📍 ${ad.quartier}, ${ad.ville} (${ad.type})</div>
+                        <a href="https://wa.me/${ad.whatsapp}?text=Bonjour, je suis intéressé par votre annonce : ${ad.titre}" 
+                           class="btn-whatsapp" target="_blank">
+                           💬 Contact WhatsApp
+                        </a>
+                    </div>
+                </div>`).join('');
+        }
+
+        window.filterAds = () => {
+            const title = document.getElementById('filterTitle').value.toLowerCase();
+            const type = document.getElementById('filterType').value;
+            const city = document.getElementById('filterCity').value;
+
+            const filtered = allAds.filter(ad => {
+                return (ad.titre.toLowerCase().includes(title) || ad.quartier.toLowerCase().includes(title)) &&
+                    (type === "" || ad.type === type) &&
+                    (city === "" || ad.ville === city);
+            });
+            renderAds(filtered);
+        };
+
+        window.toggleFav = (id) => alert("Ajouté aux favoris ! (ID: " + id + ")");
     </script>
 </body>
 

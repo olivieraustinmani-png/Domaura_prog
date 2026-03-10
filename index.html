@@ -12,6 +12,7 @@
             --dark: #2d3436;
             --light: #f8f9fa;
             --success: #25D366;
+            --google: #4285F4;
         }
 
         body {
@@ -219,6 +220,7 @@
 </head>
 
 <body>
+
     <header>
         <h1 style="margin:0; font-size: 1.6rem; letter-spacing: -1px;">DOMAURA</h1>
         <div id="userStatus"
@@ -255,6 +257,7 @@
     <section id="secEspace" class="section">
         <div id="authZone" class="auth-container">
             <h2 style="margin-top:0">Bienvenue</h2>
+            <p style="color:#666; margin-bottom:25px">Inscrivez-vous pour publier vos annonces</p>
             <input type="email" id="email" placeholder="Email professionnel">
             <div class="password-wrapper">
                 <input type="password" id="password" placeholder="Mot de passe (6+ car.)">
@@ -265,7 +268,7 @@
 
         <div id="dashboard" class="auth-container hidden" style="max-width:550px">
             <h3 style="margin-top:0">➕ Publier un bien</h3>
-            <input type="text" id="title" placeholder="Titre (ex: Magnifique Studio)">
+            <input type="text" id="title" placeholder="Titre (ex: Magnifique Studio moderne)">
             <div style="display: flex; gap: 10px;">
                 <select id="type">
                     <option value="Studio">Studio</option>
@@ -279,9 +282,9 @@
                     <option value="Kribi">Kribi</option>
                 </select>
             </div>
-            <input type="text" id="neighborhood" placeholder="Quartier (ex: Bastos)">
-            <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA)">
-            <input type="text" id="whatsapp" placeholder="WhatsApp (ex: 2376...)">
+            <input type="text" id="neighborhood" placeholder="Quartier (ex: Bastos, Bonapriso...)">
+            <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA / mois)">
+            <input type="text" id="whatsapp" placeholder="WhatsApp (ex: 237690123456)">
             <label style="display:block; text-align:left; font-size:0.8rem; margin-bottom:5px; font-weight:bold">Photo
                 principale :</label>
             <input type="file" id="imageFile" accept="image/*">
@@ -328,7 +331,7 @@
         window.handleAuth = async () => {
             const e = document.getElementById('email').value;
             const p = document.getElementById('password').value;
-            if (!e || p.length < 6) return alert("Veuillez entrer un email et 6 car. min.");
+            if (!e || p.length < 6) return alert("Veuillez entrer un email et 6 car. min de mot de passe.");
             try {
                 await signInWithEmailAndPassword(auth, e, p);
                 showSec('secExplorer');
@@ -336,60 +339,72 @@
                 try {
                     await createUserWithEmailAndPassword(auth, e, p);
                     showSec('secExplorer');
-                } catch (err) { alert(err.message); }
+                } catch (err) { alert("Erreur: " + err.message); }
             }
         };
 
         onAuthStateChanged(auth, (user) => {
             const status = document.getElementById('userStatus');
+            const authZone = document.getElementById('authZone');
+            const dash = document.getElementById('dashboard');
             if (user) {
                 status.innerText = "Utilisateur : " + user.email.split('@')[0];
-                document.getElementById('authZone').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
+                authZone.classList.add('hidden');
+                dash.classList.remove('hidden');
             } else {
                 status.innerText = "Visiteur";
-                document.getElementById('authZone').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
+                authZone.classList.remove('hidden');
+                dash.classList.add('hidden');
             }
         });
 
         window.logout = () => signOut(auth).then(() => location.reload());
 
+        // --- PARTIE PUBLICATION (Version Opérationnelle Adaptée) ---
         window.publishAd = async () => {
             const btn = document.getElementById('btnPublish');
+
+            // On récupère les valeurs directement (Ancienne méthode stable)
             const titre = document.getElementById('title').value;
-            const quartier = document.getElementById('neighborhood').value;
             const prix = document.getElementById('price').value;
-            const whatsapp = document.getElementById('whatsapp').value;
+            const quartier = document.getElementById('neighborhood').value;
+            const tel = document.getElementById('whatsapp').value;
             const type = document.getElementById('type').value;
             const ville = document.getElementById('city').value;
-            const file = document.getElementById('imageFile').files[0];
+            const imageFile = document.getElementById('imageFile').files[0];
 
-            if (!titre || !quartier || !prix || !whatsapp || !file) {
-                return alert("Remplissez tout : Titre, Quartier, Prix, WhatsApp et Photo !");
+            if (!titre || !prix || !quartier || !tel || !imageFile) {
+                return alert("Veuillez remplir le titre, le prix, le quartier, le WhatsApp et choisir une photo.");
             }
 
             btn.disabled = true;
-            btn.innerText = "⏳ Envoi de l'image...";
+            btn.innerText = "⏳ Mise en ligne...";
 
             try {
+                // Étape 1 : Image vers ImgBB
                 const fd = new FormData();
-                fd.append("image", file);
+                fd.append("image", imageFile);
                 const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", { method: "POST", body: fd });
                 const img = await res.json();
+                if (!img.success) throw new Error("Erreur ImgBB");
 
-                btn.innerText = "⏳ Enregistrement annonce...";
+                // Étape 2 : Données vers Firebase
                 await addDoc(collection(db, "annonces"), {
-                    titre, type, ville, quartier, prix, whatsapp,
+                    titre: titre,
+                    prix: prix,
+                    quartier: quartier,
+                    whatsapp: tel,
+                    type: type,
+                    ville: ville,
                     image: img.data.url,
                     createdAt: new Date(),
                     uid: auth.currentUser.uid
                 });
 
-                alert("Succès !");
+                alert("Félicitations ! Votre annonce est publiée.");
                 location.reload();
             } catch (e) {
-                alert("Erreur lors de la mise en ligne.");
+                alert("Erreur de publication. Vérifiez votre connexion.");
                 btn.disabled = false;
                 btn.innerText = "Mettre en ligne l'annonce";
             }
@@ -402,21 +417,34 @@
 
         function renderAds(ads) {
             const container = document.getElementById('publicAds');
+            if (ads.length === 0) {
+                container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#999;">Aucune annonce trouvée.</p>`;
+                return;
+            }
             container.innerHTML = ads.map(ad => `
                 <div class="card">
-                    <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}')">
+                    <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}, ${ad.ville}')">
                     <div class="card-content">
                         <div class="price">${ad.prix}</div>
                         <h3 style="margin:0 0 8px 0; font-size:1.1rem;">${ad.titre}</h3>
-                        <div class="location">📍 ${ad.quartier}, ${ad.ville}</div>
-                        <a href="https://wa.me/${ad.whatsapp.replace(/\s/g, '')}" class="btn-whatsapp" target="_blank">💬 WhatsApp</a>
+                        <div class="location">📍 ${ad.quartier}, ${ad.ville} • ${ad.type}</div>
+                        <a href="https://wa.me/${ad.whatsapp.replace(/\s/g, '')}" class="btn-whatsapp" target="_blank">
+                           💬 Contact WhatsApp
+                        </a>
                     </div>
                 </div>`).join('');
         }
 
         window.filterAds = () => {
             const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
-            const filtered = allAds.filter(ad => ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt));
+            const type = document.getElementById('filterType').value;
+            const city = document.getElementById('filterCity').value;
+            const filtered = allAds.filter(ad => {
+                const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
+                const matchesType = type === "" || ad.type === type;
+                const matchesCity = city === "" || ad.ville === city;
+                return matchesSearch && matchesType && matchesCity;
+            });
             renderAds(filtered);
         };
     </script>

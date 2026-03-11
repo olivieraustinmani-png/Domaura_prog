@@ -381,47 +381,60 @@
             btn.innerText = "⏳ Mise en ligne...";
 
             try {
-                // Étape 1 : Image vers ImgBB
-                const fd = new FormData();
-                fd.append("image", imageFile);
-                const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", { method: "POST", body: fd });
-                const img = await res.json();
-                if (!img.success) throw new Error("Erreur ImgBB");
+                // Diagnostic : On vérifie si le fichier est bien présent
+                console.log("Fichier à envoyer :", imageFile.name);
 
-                // Étape 2 : Données vers Firebase
+                const formData = new FormData();
+                formData.append("image", imageFile);
+
+                // On utilise l'ancienne méthode robuste avec une vérification stricte
+                const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const imgResponse = await res.json();
+
+                // Si ImgBB répond mais avec une erreur
+                if (!imgResponse.success) {
+                    console.error("Détails erreur ImgBB :", imgResponse);
+                    throw new Error("ImgBB a refusé l'image. Code : " + imgResponse.status);
+                }
+
+                const imageUrl = imgResponse.data.url;
+                console.log("Image hébergée avec succès :", imageUrl);
+
+                // Enregistrement Firebase
                 await addDoc(collection(db, "annonces"), {
-                    titre: titre,
-                    prix: prix,
-                    quartier: quartier,
-                    whatsapp: tel,
-                    type: type,
-                    ville: ville,
-                    image: img.data.url,
+                    titre, prix, quartier, whatsapp: tel,
+                    type, ville,
+                    image: imageUrl,
                     createdAt: new Date(),
                     uid: auth.currentUser.uid
                 });
 
-                alert("Félicitations ! Votre annonce est publiée.");
+                alert("Annonce publiée !");
                 location.reload();
+
             } catch (e) {
-                alert("Erreur de publication. Vérifiez votre connexion.");
+                console.error("Erreur complète :", e);
+                alert("Problème avec l'image : " + e.message);
                 btn.disabled = false;
                 btn.innerText = "Mettre en ligne l'annonce";
             }
-        };
 
-        onSnapshot(query(collection(db, "annonces"), orderBy("createdAt", "desc")), (snap) => {
-            allAds = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            renderAds(allAds);
-        });
+            onSnapshot(query(collection(db, "annonces"), orderBy("createdAt", "desc")), (snap) => {
+                allAds = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderAds(allAds);
+            });
 
-        function renderAds(ads) {
-            const container = document.getElementById('publicAds');
-            if (ads.length === 0) {
-                container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#999;">Aucune annonce trouvée.</p>`;
-                return;
-            }
-            container.innerHTML = ads.map(ad => `
+            function renderAds(ads) {
+                const container = document.getElementById('publicAds');
+                if (ads.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#999;">Aucune annonce trouvée.</p>`;
+                    return;
+                }
+                container.innerHTML = ads.map(ad => `
                 <div class="card">
                     <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}, ${ad.ville}')">
                     <div class="card-content">
@@ -433,20 +446,20 @@
                         </a>
                     </div>
                 </div>`).join('');
-        }
+            }
 
-        window.filterAds = () => {
-            const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
-            const type = document.getElementById('filterType').value;
-            const city = document.getElementById('filterCity').value;
-            const filtered = allAds.filter(ad => {
-                const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
-                const matchesType = type === "" || ad.type === type;
-                const matchesCity = city === "" || ad.ville === city;
-                return matchesSearch && matchesType && matchesCity;
-            });
-            renderAds(filtered);
-        };
+            window.filterAds = () => {
+                const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
+                const type = document.getElementById('filterType').value;
+                const city = document.getElementById('filterCity').value;
+                const filtered = allAds.filter(ad => {
+                    const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
+                    const matchesType = type === "" || ad.type === type;
+                    const matchesCity = city === "" || ad.ville === city;
+                    return matchesSearch && matchesType && matchesCity;
+                });
+                renderAds(filtered);
+            };
     </script>
 </body>
 

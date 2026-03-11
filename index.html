@@ -364,77 +364,76 @@
         window.publishAd = async () => {
             const btn = document.getElementById('btnPublish');
 
-            // On récupère les valeurs directement (Ancienne méthode stable)
+            // Récupération des valeurs
             const titre = document.getElementById('title').value;
             const prix = document.getElementById('price').value;
             const quartier = document.getElementById('neighborhood').value;
-            const tel = document.getElementById('whatsapp').value;
+            const whatsapp = document.getElementById('whatsapp').value;
             const type = document.getElementById('type').value;
             const ville = document.getElementById('city').value;
             const imageFile = document.getElementById('imageFile').files[0];
 
-            if (!titre || !prix || !quartier || !tel || !imageFile) {
-                return alert("Veuillez remplir le titre, le prix, le quartier, le WhatsApp et choisir une photo.");
+            if (!titre || !prix || !quartier || !whatsapp || !imageFile) {
+                return alert("Veuillez remplir tous les champs.");
             }
 
             btn.disabled = true;
-            btn.innerText = "⏳ Mise en ligne...";
+            btn.innerText = "⏳ Envoi de l'image...";
 
             try {
-                // Diagnostic : On vérifie si le fichier est bien présent
-                console.log("Fichier à envoyer :", imageFile.name);
+                // 1. ENVOI IMGBB
+                const fd = new FormData();
+                fd.append("image", imageFile);
+                const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", { method: "POST", body: fd });
+                const img = await res.json();
 
-                const formData = new FormData();
-                formData.append("image", imageFile);
+                if (img.success) {
+                    console.log("Image envoyée :", img.data.url);
+                    btn.innerText = "⏳ Enregistrement sur DOMAURA...";
 
-                // On utilise l'ancienne méthode robuste avec une vérification stricte
-                const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", {
-                    method: "POST",
-                    body: formData
-                });
+                    // 2. ENREGISTREMENT FIREBASE
+                    // On s'assure que les noms des variables correspondent exactement aux champs Firestore
+                    await addDoc(collection(db, "annonces"), {
+                        titre: titre,
+                        prix: prix,
+                        quartier: quartier,
+                        whatsapp: whatsapp,
+                        type: type,
+                        ville: ville,
+                        image: img.data.url,
+                        createdAt: new Date(),
+                        uid: auth.currentUser.uid
+                    });
 
-                const imgResponse = await res.json();
+                    console.log("Succès Firebase !");
+                    alert("Annonce publiée avec succès !");
 
-                // Si ImgBB répond mais avec une erreur
-                if (!imgResponse.success) {
-                    console.error("Détails erreur ImgBB :", imgResponse);
-                    throw new Error("ImgBB a refusé l'image. Code : " + imgResponse.status);
+                    // 3. REDIRECTION ET RAFRAÎCHISSEMENT
+                    window.location.reload();
+                } else {
+                    throw new Error("Erreur lors de l'hébergement de l'image.");
                 }
 
-                const imageUrl = imgResponse.data.url;
-                console.log("Image hébergée avec succès :", imageUrl);
-
-                // Enregistrement Firebase
-                await addDoc(collection(db, "annonces"), {
-                    titre, prix, quartier, whatsapp: tel,
-                    type, ville,
-                    image: imageUrl,
-                    createdAt: new Date(),
-                    uid: auth.currentUser.uid
-                });
-
-                alert("Annonce publiée !");
-                location.reload();
-
             } catch (e) {
-                console.error("Erreur complète :", e);
-                alert("Problème avec l'image : " + e.message);
+                console.error("Erreur détaillée :", e);
+                // Si l'erreur est "insufficient permissions", c'est tes règles Firebase
+                if (e.message.includes("permissions")) {
+                    alert("Erreur : Vous n'avez pas l'autorisation de publier. Vérifiez vos règles Firebase.");
+                } else {
+                    alert("Erreur lors de la publication : " + e.message);
+                }
                 btn.disabled = false;
                 btn.innerText = "Mettre en ligne l'annonce";
             }
+        };
 
-            onSnapshot(query(collection(db, "annonces"), orderBy("createdAt", "desc")), (snap) => {
-                allAds = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderAds(allAds);
-            });
-
-            function renderAds(ads) {
-                const container = document.getElementById('publicAds');
-                if (ads.length === 0) {
-                    container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#999;">Aucune annonce trouvée.</p>`;
-                    return;
-                }
-                container.innerHTML = ads.map(ad => `
+        function renderAds(ads) {
+            const container = document.getElementById('publicAds');
+            if (ads.length === 0) {
+                container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#999;">Aucune annonce trouvée.</p>`;
+                return;
+            }
+            container.innerHTML = ads.map(ad => `
                 <div class="card">
                     <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}, ${ad.ville}')">
                     <div class="card-content">
@@ -446,20 +445,20 @@
                         </a>
                     </div>
                 </div>`).join('');
-            }
+        }
 
-            window.filterAds = () => {
-                const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
-                const type = document.getElementById('filterType').value;
-                const city = document.getElementById('filterCity').value;
-                const filtered = allAds.filter(ad => {
-                    const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
-                    const matchesType = type === "" || ad.type === type;
-                    const matchesCity = city === "" || ad.ville === city;
-                    return matchesSearch && matchesType && matchesCity;
-                });
-                renderAds(filtered);
-            };
+        window.filterAds = () => {
+            const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
+            const type = document.getElementById('filterType').value;
+            const city = document.getElementById('filterCity').value;
+            const filtered = allAds.filter(ad => {
+                const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
+                const matchesType = type === "" || ad.type === type;
+                const matchesCity = city === "" || ad.ville === city;
+                return matchesSearch && matchesType && matchesCity;
+            });
+            renderAds(filtered);
+        };
     </script>
 </body>
 

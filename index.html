@@ -1,306 +1,356 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOMAURA - Plateforme Immobilière Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DOMAURA — Plateforme Immobilière</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #f3d709;
-            --dark: #2d3436;
-            --light: #f8f9fa;
-            --success: #25D366;
-            --google: #4285F4;
+            --text: #2d3436;
+            --whatsapp: #25D366;
+            --bg: #fafafa;
+            --card: #fff;
+            --muted: #7f8a8c
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
             margin: 0;
-            background-color: var(--light);
-            color: var(--dark);
-            scroll-behavior: smooth;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #fff, #fbfbfb);
+            color: var(--text);
+            padding-top: 76px
         }
 
         header {
-            background-color: var(--primary);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
+            position: fixed;
+            left: 0;
+            right: 0;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-bar {
-            background: white;
-            padding: 15px 5%;
+            height: 76px;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #eee;
+            z-index: 1000
         }
 
-        .search-bar select,
-        .search-bar input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            flex: 1;
-            min-width: 150px;
-            font-family: inherit;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), #ffd84a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #111;
+            font-size: 18px
+        }
+
+        .title {
+            display: flex;
+            flex-direction: column
+        }
+
+        .title .name {
+            font-weight: 700
+        }
+
+        .status-pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid #eee
+        }
+
+        .tabs {
+            max-width: 1100px;
+            margin: 18px auto 0;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--muted)
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(90deg, var(--primary), #f8d84a);
+            color: #111
         }
 
         .container {
-            width: 95%;
+            max-width: 1100px;
             margin: 20px auto;
+            padding: 18px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: 1fr;
+            gap: 18px
+        }
+
+        .search-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 6px
+        }
+
+        .input,
+        select {
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #e6e6e6;
+            background: #fff;
+            font-size: 14px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px
+        }
+
+        @media (max-width:1000px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:640px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .tabs {
+                padding: 0 12px
+            }
+
+            .container {
+                padding: 12px
+            }
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
+            background: var(--card);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: 0.3s;
-            position: relative;
-            border: 1px solid #eee;
+            box-shadow: 0 6px 18px rgba(45, 52, 54, 0.08);
+            transition: transform .18s
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 14px 40px rgba(45, 52, 54, 0.12)
         }
 
         .card img {
             width: 100%;
-            height: 230px;
-            object-fit: cover;
-            cursor: pointer;
+            height: 180px;
+            object-fit: cover
         }
 
-        .card-content {
-            padding: 18px;
+        .card-body {
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
         }
 
         .price {
-            color: #e67e22;
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 700;
+            color: var(--text)
         }
 
-        .location {
-            font-size: 0.9rem;
-            color: #666;
+        .meta {
             display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 13px
         }
 
-        .btn-whatsapp {
-            background: var(--success);
-            color: white;
+        .whatsapp-btn {
+            background: var(--whatsapp);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            width: 100%;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: 0.2s;
-            box-sizing: border-box;
+            text-decoration: none
         }
 
-        .auth-container {
-            max-width: 450px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .password-wrapper {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 12px;
-            cursor: pointer;
-            color: #999;
-            font-size: 1.2rem;
-        }
-
-        .section {
-            display: none;
-            padding: 10px;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
+        .auth-box {
+            max-width: 520px;
+            background: var(--card);
+            padding: 18px;
             border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(45, 52, 54, 0.08)
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px
+        }
+
+        .primary {
             background: var(--primary);
-            font-weight: bold;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+            border: 0;
+            padding: 10px 14px;
             border-radius: 10px;
-            box-sizing: border-box;
+            font-weight: 700;
+            cursor: pointer
         }
 
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            background: white;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .nav-tabs button {
-            border: none;
-            background: none;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            color: #666;
-            transition: 0.3s;
-        }
-
-        .nav-tabs button.active {
-            color: var(--dark);
-            border-bottom: 3px solid var(--primary);
+        footer {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 12px 20px;
+            color: var(--muted);
+            font-size: 13px
         }
     </style>
 </head>
 
 <body>
-
     <header>
-        <h1 style="margin:0; font-size: 1.6rem; letter-spacing: -1px;">DOMAURA</h1>
-        <div id="userStatus"
-            style="font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,0.3); padding: 5px 12px; border-radius: 20px;">
-            Visiteur</div>
+        <div class="brand">
+            <div class="logo">D</div>
+            <div class="title">
+                <div class="name">DOMAURA</div>
+                <div class="tag">Immobilier — Trouvez votre lieu</div>
+            </div>
+        </div>
+        <div class="user-status">
+            <div id="user-pill" class="status-pill">Visiteur</div><button id="logoutBtn"
+                style="display:none;margin-left:8px;border:0;background:transparent;cursor:pointer">Se
+                déconnecter</button>
+        </div>
     </header>
 
-    <div class="nav-tabs">
-        <button id="tabExplorer" onclick="showSec('secExplorer')" class="active">🏠 Explorer</button>
-        <button id="tabEspace" onclick="showSec('secEspace')">👤 Mon Espace</button>
+    <div class="tabs" role="tablist" aria-label="Navigation principale">
+        <button id="tabExplore" class="tab-btn active" role="tab">Explorer</button>
+        <button id="tabMy" class="tab-btn" role="tab">Mon Espace</button>
     </div>
 
-    <div class="search-bar" id="filterZone">
-        <input type="text" id="filterTitle" placeholder="Quartier, ville, titre..." oninput="filterAds()">
-        <select id="filterType" onchange="filterAds()">
-            <option value="">Tous les types</option>
-            <option value="Studio">Studio</option>
-            <option value="Appartement">Appartement</option>
-            <option value="Villa">Villa</option>
-            <option value="Terrain">Terrain</option>
-        </select>
-        <select id="filterCity" onchange="filterAds()">
-            <option value="">Toutes les villes</option>
-            <option value="Yaoundé">Yaoundé</option>
-            <option value="Douala">Douala</option>
-            <option value="Kribi">Kribi</option>
-        </select>
-    </div>
-
-    <section id="secExplorer" class="section active">
-        <div class="container" id="publicAds"></div>
-    </section>
-
-    <section id="secEspace" class="section">
-        <div id="authZone" class="auth-container">
-            <h2 style="margin-top:0">Bienvenue</h2>
-            <p style="color:#666; margin-bottom:25px">Inscrivez-vous pour publier vos annonces</p>
-            <input type="email" id="email" placeholder="Email professionnel">
-            <div class="password-wrapper">
-                <input type="password" id="password" placeholder="Mot de passe (6+ car.)">
-                <span class="password-toggle" onclick="togglePassword()">👁️</span>
-            </div>
-            <button class="btn" onclick="handleAuth()">S'inscrire ou Se connecter</button>
-        </div>
-
-        <div id="dashboard" class="auth-container hidden" style="max-width:550px">
-            <h3 style="margin-top:0">➕ Publier un bien</h3>
-            <input type="text" id="title" placeholder="Titre (ex: Magnifique Studio moderne)">
-            <div style="display: flex; gap: 10px;">
-                <select id="type">
+    <main class="container" id="main">
+        <section id="exploreView">
+            <div class="search-row">
+                <input id="searchNeighborhood" class="input" placeholder="Rechercher par Quartier"
+                    oninput="filterListings()" />
+                <select id="filterType" class="input" oninput="filterListings()">
+                    <option value="">Tous les Types</option>
                     <option value="Studio">Studio</option>
                     <option value="Appartement">Appartement</option>
                     <option value="Villa">Villa</option>
                     <option value="Terrain">Terrain</option>
                 </select>
-                <select id="city">
-                    <option value="Yaoundé">Yaoundé</option>
-                    <option value="Douala">Douala</option>
-                    <option value="Kribi">Kribi</option>
-                </select>
+                <div style="margin-left:auto" class="pill"><strong id="countDisplay">0</strong><span
+                        style="color:var(--muted)"> annonces</span></div>
             </div>
-            <input type="text" id="neighborhood" placeholder="Quartier (ex: Bastos, Bonapriso...)">
-            <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA / mois)">
-            <input type="text" id="whatsapp" placeholder="WhatsApp (ex: 237690123456)">
-            <label style="display:block; text-align:left; font-size:0.8rem; margin-bottom:5px; font-weight:bold">Photo
-                principale :</label>
-            <input type="file" id="imageFile" accept="image/*">
-            <button class="btn" id="btnPublish" onclick="publishAd()">Mettre en ligne l'annonce</button>
-            <hr style="margin: 25px 0; border: none; border-top: 1px solid #eee;">
-            <button onclick="logout()"
-                style="color:#e74c3c; background:none; border:none; cursor:pointer; font-weight:600">Se
-                déconnecter</button>
-        </div>
-    </section>
+            <div id="listingsGrid" class="grid"></div>
+        </section>
+
+        <section id="myView" style="display:none">
+            <div class="auth-box" id="authArea">
+                <div id="authForms">
+                    <h3 style="margin-top:0">Connexion / Inscription</h3>
+                    <div style="display:flex;gap:8px;margin-bottom:12px"><button id="showLogin" class="primary"
+                            style="background:#fff;color:var(--text);border:1px solid #eee">Connexion</button><button
+                            id="showRegister" class="primary"
+                            style="background:#fff;color:var(--text);border:1px solid #eee">Inscription</button></div>
+                    <form id="loginForm">
+                        <label>Email</label><input id="loginEmail" class="input" type="email" required />
+                        <label>Mot de passe</label>
+                        <div style="position:relative"><input id="loginPassword" class="input" type="password"
+                                required /><button type="button" id="toggleLoginPwd"
+                                style="position:absolute;right:8px;top:8px;border:0;background:transparent;cursor:pointer">👁️</button>
+                        </div>
+                        <div style="margin-top:8px"><button type="submit" class="primary">Se connecter</button></div>
+                    </form>
+                    <form id="registerForm" style="display:none">
+                        <label>Email</label><input id="regEmail" class="input" type="email" required />
+                        <label>Mot de passe</label>
+                        <div style="position:relative"><input id="regPassword" class="input" type="password"
+                                required /><button type="button" id="toggleRegPwd"
+                                style="position:absolute;right:8px;top:8px;border:0;background:transparent;cursor:pointer">👁️</button>
+                        </div>
+                        <div style="margin-top:8px"><button type="submit" class="primary">S'inscrire</button></div>
+                    </form>
+                </div>
+                <div id="dashboardArea" style="display:none">
+                    <h3>Publier une annonce</h3>
+                    <form id="publishForm">
+                        <label>Titre</label><input id="title" class="input" required />
+                        <div style="display:flex;gap:8px;margin-top:8px">
+                            <div style="flex:1"><label>Prix</label><input id="price" class="input" type="number"
+                                    required /></div>
+                            <div style="flex:1"><label>Ville</label><select id="city" class="input">
+                                    <option>Dakar</option>
+                                    <option>Thiès</option>
+                                    <option>Saint-Louis</option>
+                                    <option>Ziguinchor</option>
+                                    <option>Autre</option>
+                                </select></div>
+                        </div>
+                        <label style="margin-top:8px">Quartier</label><input id="neighborhood" class="input" required />
+                        <label style="margin-top:8px">Type</label><select id="type" class="input" required>
+                            <option>Studio</option>
+                            <option>Appartement</option>
+                            <option>Villa</option>
+                            <option>Terrain</option>
+                        </select>
+                        <label style="margin-top:8px">WhatsApp</label><input id="whatsapp" class="input" required />
+                        <label style="margin-top:8px">Image / Vidéo</label><input id="mediaFile" type="file"
+                            accept="image/*,video/*" class="input" />
+                        <div style="margin-top:12px"><button id="publishBtn" type="submit"
+                                class="primary">Publier</button></div>
+                    </form>
+                </div>
+            </div>
+            <div style="margin-top:12px" class="auth-box">
+                <h4>Mes annonces</h4>
+                <div id="myListings"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>© DOMAURA — Prototype. Remplacez les clés Firebase par les vôtres.</footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, orderBy, getDocs, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.9.1/firebase-firestore.js";
+        import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.1/firebase-storage.js";
 
+        // --- CONFIG FIREBASE (vos clés fournies) ---
         const firebaseConfig = {
             apiKey: "AIzaSyA-AUuHUKSd-keTmcLMGiWEWNoeFTANRaQ",
             authDomain: "domaura-7052e.firebaseapp.com",
@@ -310,155 +360,81 @@
             appId: "1:159613937767:web:986b32540f4edf5a068cc2"
         };
 
+        console.log("Initialisation Firebase...");
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        let allAds = [];
+        const storage = getStorage(app);
 
-        window.showSec = (id) => {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if (id === 'secExplorer') document.getElementById('tabExplorer').classList.add('active');
-            else document.getElementById('tabEspace').classList.add('active');
-        };
+        // UI elements
+        const tabExplore = document.getElementById('tabExplore');
+        const tabMy = document.getElementById('tabMy');
+        const exploreView = document.getElementById('exploreView');
+        const myView = document.getElementById('myView');
+        const userPill = document.getElementById('user-pill');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const showLogin = document.getElementById('showLogin');
+        const showRegister = document.getElementById('showRegister');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const regEmail = document.getElementById('regEmail');
+        const regPassword = document.getElementById('regPassword');
+        const toggleLoginPwd = document.getElementById('toggleLoginPwd');
+        const toggleRegPwd = document.getElementById('toggleRegPwd');
+        const dashboardArea = document.getElementById('dashboardArea');
+        const authForms = document.getElementById('authForms');
+        const publishForm = document.getElementById('publishForm');
+        const publishBtn = document.getElementById('publishBtn');
+        const myListings = document.getElementById('myListings');
+        const listingsGrid = document.getElementById('listingsGrid');
 
-        window.togglePassword = () => {
-            const p = document.getElementById('password');
-            p.type = p.type === "password" ? "text" : "password";
-        };
+        let listings = [];
+        let currentUser = null;
 
-        window.handleAuth = async () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
-            if (!e || p.length < 6) return alert("Veuillez entrer un email et 6 car. min de mot de passe.");
-            try {
-                await signInWithEmailAndPassword(auth, e, p);
-                showSec('secExplorer');
-            } catch {
-                try {
-                    await createUserWithEmailAndPassword(auth, e, p);
-                    showSec('secExplorer');
-                } catch (err) { alert("Erreur: " + err.message); }
-            }
-        };
+        tabExplore.addEventListener('click', () => { tabExplore.classList.add('active'); tabMy.classList.remove('active'); exploreView.style.display = 'block'; myView.style.display = 'none'; });
+        tabMy.addEventListener('click', () => { tabMy.classList.add('active'); tabExplore.classList.remove('active'); exploreView.style.display = 'none'; myView.style.display = 'block'; });
+        showLogin.addEventListener('click', () => { loginForm.style.display = 'block'; registerForm.style.display = 'none'; });
+        showRegister.addEventListener('click', () => { loginForm.style.display = 'none'; registerForm.style.display = 'block'; });
+        toggleLoginPwd.addEventListener('click', () => { loginPassword.type = loginPassword.type === 'password' ? 'text' : 'password'; });
+        toggleRegPwd.addEventListener('click', () => { regPassword.type = regPassword.type === 'password' ? 'text' : 'password'; });
 
-        onAuthStateChanged(auth, (user) => {
-            const status = document.getElementById('userStatus');
-            const authZone = document.getElementById('authZone');
-            const dash = document.getElementById('dashboard');
-            if (user) {
-                status.innerText = "Utilisateur : " + user.email.split('@')[0];
-                authZone.classList.add('hidden');
-                dash.classList.remove('hidden');
-            } else {
-                status.innerText = "Visiteur";
-                authZone.classList.remove('hidden');
-                dash.classList.add('hidden');
-            }
+        registerForm.addEventListener('submit', async (e) => { e.preventDefault(); const email = regEmail.value.trim(); const pass = regPassword.value.trim(); console.log('Inscription:', email); try { const userCred = await createUserWithEmailAndPassword(auth, email, pass); console.log('Inscrit', userCred.user.email); } catch (err) { console.error('Erreur inscription', err); alert(err.message || err); } });
+        loginForm.addEventListener('submit', async (e) => { e.preventDefault(); const email = loginEmail.value.trim(); const pass = loginPassword.value.trim(); console.log('Connexion:', email); try { const userCred = await signInWithEmailAndPassword(auth, email, pass); console.log('Connecté', userCred.user.email); } catch (err) { console.error('Erreur login', err); alert(err.message || err); } });
+        logoutBtn.addEventListener('click', async () => { await signOut(auth); location.reload(); });
+
+        onAuthStateChanged(auth, user => {
+            currentUser = user;
+            console.log('Auth changed:', user ? user.email : 'none');
+            if (user) { userPill.textContent = user.email; logoutBtn.style.display = 'inline'; authForms.style.display = 'none'; dashboardArea.style.display = 'block'; loadMyListings(); } else { userPill.textContent = 'Visiteur'; logoutBtn.style.display = 'none'; authForms.style.display = 'block'; dashboardArea.style.display = 'none'; myListings.innerHTML = ''; }
         });
 
-        window.logout = () => signOut(auth).then(() => location.reload());
+        async function loadListings() { console.log('Chargement annonces...'); try { const col = collection(db, 'annonces'); const q = query(col, orderBy('createdAt', 'desc')); const snap = await getDocs(q); listings = []; snap.forEach(doc => { listings.push({ id: doc.id, ...doc.data() }); }); console.log('Annonces chargées', listings.length); renderListings(listings); } catch (err) { console.error('Erreur loadListings', err); } }
 
-        // --- PARTIE PUBLICATION (Version Opérationnelle Adaptée) ---
-        window.publishAd = async () => {
-            const btn = document.getElementById('btnPublish');
+        function renderListings(arr) { listingsGrid.innerHTML = ''; arr.forEach(item => { const card = document.createElement('article'); card.className = 'card'; const img = document.createElement('img'); img.src = item.imageUrl || ''; img.alt = item.title || 'Annonce'; const body = document.createElement('div'); body.className = 'card-body'; body.innerHTML = `<div class="price">${item.price ? Number(item.price).toLocaleString() + ' FCFA' : ''}</div><div class="title-card">${escapeHtml(item.title || '')}</div><div class="meta"><div>${escapeHtml(item.city || '')} — ${escapeHtml(item.neighborhood || '')}</div><div>${escapeHtml(item.type || '')}</div></div>`; const footer = document.createElement('div'); footer.className = 'card-footer'; const wa = document.createElement('a'); wa.className = 'whatsapp-btn'; const waNumber = item.whatsapp || ''; const waMessage = encodeURIComponent(`Bonjour, je suis intéressé(e) par votre annonce "${item.title}".`); wa.href = `https://wa.me/${waNumber}?text=${waMessage}`; wa.target = '_blank'; wa.rel = 'noopener'; wa.innerHTML = `<span>💬</span><span>WhatsApp</span>`; footer.appendChild(wa); card.appendChild(img); card.appendChild(body); card.appendChild(footer); listingsGrid.appendChild(card); }); document.getElementById('countDisplay').textContent = arr.length; }
 
-            // Récupération des valeurs
-            const titre = document.getElementById('title').value;
-            const prix = document.getElementById('price').value;
-            const quartier = document.getElementById('neighborhood').value;
-            const whatsapp = document.getElementById('whatsapp').value;
-            const type = document.getElementById('type').value;
-            const ville = document.getElementById('city').value;
-            const imageFile = document.getElementById('imageFile').files[0];
+        function escapeHtml(str) { return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s])); }
 
-            if (!titre || !prix || !quartier || !whatsapp || !imageFile) {
-                return alert("Veuillez remplir tous les champs.");
-            }
+        window.filterListings = () => { const q = (document.getElementById('searchNeighborhood').value || '').toLowerCase(); const t = (document.getElementById('filterType').value || '').toLowerCase(); const filtered = listings.filter(it => { const matchQ = it.neighborhood ? it.neighborhood.toLowerCase().includes(q) : false; const matchT = t ? (it.type || '').toLowerCase() === t : true; return (q ? matchQ : true) && matchT; }); renderListings(filtered); };
 
-            btn.disabled = true;
-            btn.innerText = "⏳ Envoi de l'image...";
+        publishForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); if (!currentUser) { alert('Vous devez être connecté pour publier.'); return; } publishBtn.disabled = true; publishBtn.textContent = 'Publication...'; try {
+                const title = document.getElementById('title').value.trim(); const price = Number(document.getElementById('price').value); const city = document.getElementById('city').value; const neighborhood = document.getElementById('neighborhood').value.trim(); const type = document.getElementById('type').value; const whatsapp = document.getElementById('whatsapp').value.trim(); const fileInput = document.getElementById('mediaFile'); console.log('Form data', { title, price, city, neighborhood, type, whatsapp, fileProvided: !!fileInput.files[0] }); let mediaUrl = ''; if (fileInput.files && fileInput.files[0]) { const file = fileInput.files[0]; console.log('Upload to Firebase Storage:', file.name); const path = `annonces/${currentUser.uid}/${Date.now()}_${file.name}`; const sRef = storageRef(storage, path); const uploadTask = uploadBytesResumable(sRef, file); await new Promise((resolve, reject) => { uploadTask.on('state_changed', snapshot => { const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100; console.log('Upload progress', pct.toFixed(2)); }, err => { console.error('Upload error', err); reject(err); }, async () => { mediaUrl = await getDownloadURL(uploadTask.snapshot.ref); console.log('URL stockage:', mediaUrl); resolve(); }); }); } else { console.log('Aucun média fourni'); }
+                const payload = { title, price, city, neighborhood, type, whatsapp, imageUrl: mediaUrl, uid: currentUser.uid, userEmail: currentUser.email, createdAt: serverTimestamp() };
+                console.log('Enregistrement Firestore:', payload);
+                const docRef = await addDoc(collection(db, 'annonces'), payload);
+                console.log('Annonce publiée id:', docRef.id);
+                alert('Annonce publiée avec succès.');
+                location.reload();
+            } catch (err) { console.error('Erreur publication', err); alert(err.message || err); publishBtn.disabled = false; publishBtn.textContent = 'Publier'; }
+        });
 
-            try {
-                // 1. ENVOI IMGBB
-                const fd = new FormData();
-                fd.append("image", imageFile);
-                const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", { method: "POST", body: fd });
-                const img = await res.json();
+        async function loadMyListings() { if (!currentUser) return; try { const col = collection(db, 'annonces'); const q = query(col, where('uid', '==', currentUser.uid), orderBy('createdAt', 'desc')); const snap = await getDocs(q); myListings.innerHTML = ''; snap.forEach(doc => { const d = doc.data(); const el = document.createElement('div'); el.className = 'card'; el.style.display = 'flex'; el.style.gap = '8px'; el.style.padding = '8px'; el.innerHTML = `<img src="${d.imageUrl || ''}" style="width:70px;height:70px;object-fit:cover;border-radius:8px" alt="img"><div style="flex:1"><div style="font-weight:600">${escapeHtml(d.title || '')}</div><div style="color:var(--muted);font-size:13px">${escapeHtml(d.city || '')} — ${escapeHtml(d.neighborhood || '')}</div></div><div style="font-weight:700">${d.price ? Number(d.price).toLocaleString() + ' FCFA' : ''}</div>`; myListings.appendChild(el); }); } catch (err) { console.error('Erreur loadMyListings', err); } }
 
-                if (img.success) {
-                    console.log("Image envoyée :", img.data.url);
-                    btn.innerText = "⏳ Enregistrement sur DOMAURA...";
+        // Initial load
+        await loadListings();
 
-                    // 2. ENREGISTREMENT FIREBASE
-                    // On s'assure que les noms des variables correspondent exactement aux champs Firestore
-                    await addDoc(collection(db, "annonces"), {
-                        titre: titre,
-                        prix: prix,
-                        quartier: quartier,
-                        whatsapp: whatsapp,
-                        type: type,
-                        ville: ville,
-                        image: img.data.url,
-                        createdAt: new Date(),
-                        uid: auth.currentUser.uid
-                    });
-
-                    console.log("Succès Firebase !");
-                    alert("Annonce publiée avec succès !");
-
-                    // 3. REDIRECTION ET RAFRAÎCHISSEMENT
-                    window.location.reload();
-                } else {
-                    throw new Error("Erreur lors de l'hébergement de l'image.");
-                }
-
-            } catch (e) {
-                console.error("Erreur détaillée :", e);
-                // Si l'erreur est "insufficient permissions", c'est tes règles Firebase
-                if (e.message.includes("permissions")) {
-                    alert("Erreur : Vous n'avez pas l'autorisation de publier. Vérifiez vos règles Firebase.");
-                } else {
-                    alert("Erreur lors de la publication : " + e.message);
-                }
-                btn.disabled = false;
-                btn.innerText = "Mettre en ligne l'annonce";
-            }
-        };
-
-        function renderAds(ads) {
-            const container = document.getElementById('publicAds');
-            if (ads.length === 0) {
-                container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#999;">Aucune annonce trouvée.</p>`;
-                return;
-            }
-            container.innerHTML = ads.map(ad => `
-                <div class="card">
-                    <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}, ${ad.ville}')">
-                    <div class="card-content">
-                        <div class="price">${ad.prix}</div>
-                        <h3 style="margin:0 0 8px 0; font-size:1.1rem;">${ad.titre}</h3>
-                        <div class="location">📍 ${ad.quartier}, ${ad.ville} • ${ad.type}</div>
-                        <a href="https://wa.me/${ad.whatsapp.replace(/\s/g, '')}" class="btn-whatsapp" target="_blank">
-                           💬 Contact WhatsApp
-                        </a>
-                    </div>
-                </div>`).join('');
-        }
-
-        window.filterAds = () => {
-            const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
-            const type = document.getElementById('filterType').value;
-            const city = document.getElementById('filterCity').value;
-            const filtered = allAds.filter(ad => {
-                const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
-                const matchesType = type === "" || ad.type === type;
-                const matchesCity = city === "" || ad.ville === city;
-                return matchesSearch && matchesType && matchesCity;
-            });
-            renderAds(filtered);
-        };
     </script>
 </body>
 

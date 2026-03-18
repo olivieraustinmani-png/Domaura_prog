@@ -1,6 +1,6 @@
 # 🏛️ DOMI / AURA - Plateforme Hybride Immobilier & Art
 
-> **Le futur de l'habitat et de la culture numérique à Yaoundé.**
+> **Le futur de l'habitat et de la culture numérique au cameroun.**
 
 **DOMI / AURA** est un écosystème numérique innovant conçu pour répondre à deux défis majeurs au Cameroun : la recherche simplifiée de logements (DOMI) et la valorisation des talents artistiques numériques (AURA).
 
@@ -37,7 +37,7 @@ Pour tester le projet sur votre machine :
 
 1.  Cloner le dépôt :
     ```bash
-    git clone [https://github.com/Olivieraustinmani-PNG/domi-project.git](https://github.com/Olivieraustinmani-PNG/domi-project.git)
+    git clone [https://github.com/Olivieraustinmani-PNG/Domaura_prog.git](https://github.com/Olivieraustinmani-PNG/Domaura_prog.git)
     ```
 2.  Ouvrir le dossier :
     ```bash

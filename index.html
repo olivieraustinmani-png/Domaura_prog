@@ -4,255 +4,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOMAURA - Plateforme Immobilière Pro</title>
+    <title>DOMAURA - Plateforme de Services</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #f3d709;
-            --dark: #2d3436;
-            --light: #f8f9fa;
-            --success: #25D366;
-            --google: #4285F4;
-            --phone: #34ace0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            background-color: var(--light);
-            color: var(--dark);
-            scroll-behavior: smooth;
-        }
-
-        header {
-            background-color: var(--primary);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            background: white;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .nav-tabs button {
-            border: none;
-            background: none;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
-            color: #666;
-            transition: 0.3s;
-        }
-
-        .nav-tabs button.active {
-            color: var(--dark);
-            border-bottom: 3px solid var(--primary);
-        }
-
-        .search-bar {
-            background: white;
-            padding: 15px 5%;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-bar input,
-        .search-bar select {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            flex: 1;
-            min-width: 150px;
-            font-family: inherit;
-        }
-
-        .container {
-            width: 95%;
-            margin: 20px auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: 0.3s;
-            border: 1px solid #eee;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .card img {
-            width: 100%;
-            height: 230px;
-            object-fit: cover;
-            cursor: pointer;
-        }
-
-        .card-content {
-            padding: 18px;
-        }
-
-        .price {
-            color: #e67e22;
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .location {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            background: var(--primary);
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .btn-google {
-            background: var(--google);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn-phone {
-            background: var(--phone);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn-whatsapp {
-            background: var(--success);
-            color: white;
-            text-decoration: none;
-            display: flex;
-            justify-content: center;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            margin-top: 15px;
-            gap: 8px;
-        }
-
-        .auth-container {
-            max-width: 450px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .divider {
-            margin: 25px 0;
-            border-bottom: 1px solid #eee;
-            position: relative;
-        }
-
-        .divider span {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0 10px;
-            font-size: 0.8rem;
-            color: #999;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
 
     <header>
-        <h1 style="margin:0; font-size: 1.6rem; letter-spacing: -1px;">DOMAURA</h1>
-        <div id="userStatus"
-            style="font-size: 0.85rem; font-weight: 600; background: rgba(255,255,255,0.3); padding: 5px 12px; border-radius: 20px;">
-            Visiteur</div>
+        <h1 class="site-title">DOMAURA</h1>
+        <div class="header-actions">
+            <div id="userStatus" class="user-status">Visiteur</div>
+            <button id="createAccountBtn" class="btn btn-secondary header-btn" onclick="openAccount()">
+                Creer un compte
+            </button>
+        </div>
     </header>
 
     <div class="nav-tabs">
-        <button id="tabExplorer" onclick="showSec('secExplorer')" class="active">🏠 Explorer</button>
-        <button id="tabEspace" onclick="showSec('secEspace')">👤 Mon Espace</button>
+        <div class="nav-dropdown">
+            <button id="servicesNavBtn" data-section="secServices" onclick="toggleServicesMenu()" class="active">
+                ✨ Services
+            </button>
+            <div id="servicesDropdown" class="nav-dropdown-menu hidden">
+                <button onclick="setServiceFilter('tous')">Tout</button>
+                <button onclick="setservuceFilter('mobilier')"> Mobilier</button>
+                <button onclick="setServiceFilter('immobilier')">Immobilier</button>
+                <button onclick="setServiceFilter('art')">Art</button>
+                <button onclick="setServiceFilter('deal')">Deal</button>
+                <button onclick="setServiceFilter('courses')">Courses</button>
+                <button onclick="setServiceFilter('location')">Location</button>
+            </div>
+        </div>
+        <button data-section="secEspace" onclick="showSec('secEspace')">👤 Mon Espace</button>
     </div>
 
-    <section id="secExplorer" class="section active">
-        <div class="search-bar">
-            <input type="text" id="filterTitle" placeholder="Quartier, ville, titre..." oninput="filterAds()">
-            <select id="filterType" onchange="filterAds()">
-                <option value="">Tous les types</option>
-                <option value="Studio">Studio</option>
-                <option value="Appartement">Appartement</option>
-                <option value="Villa">Villa</option>
-                <option value="Terrain">Terrain</option>
-            </select>
-            <select id="filterCity" onchange="filterAds()">
-                <option value="">Toutes les villes</option>
-                <option value="Yaoundé">Yaoundé</option>
-                <option value="Douala">Douala</option>
-                <option value="Kribi">Kribi</option>
-            </select>
+    <section id="secServices" class="section active">
+        <div class="hero">
+            <div class="hero-copy">
+                <span class="hero-tag">DOMAURA Services</span>
+                <h2>Une plateforme unique pour explorer plusieurs services utiles au quotidien.</h2>
+                <p>
+                    DOMAURA evolue d'un prototype immobilier vers un ecosysteme multi-services connectant
+                    immobilier, art, deal, courses et location, avec une future experience premium basee
+                    sur l'inspection 3D.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn hero-btn" onclick="showSec('secImmobilier')">Explorer l'immobilier</button>
+                    <button class="btn btn-secondary" onclick="showSec('secEspace')">Publier une offre</button>
+                </div>
+            </div>
+            <div class="hero-panel">
+                <div class="hero-stat">
+                    <strong>Module actif</strong>
+                    <span>Immobilier</span>
+                </div>
+                <div class="hero-stat">
+                    <strong>Vision produit</strong>
+                    <span>Web + Mobile</span>
+                </div>
+                <div class="hero-stat">
+                    <strong>Evolution premium</strong>
+                    <span>Inspection 3D a distance</span>
+                </div>
+            </div>
         </div>
-        <div class="container" id="publicAds"></div>
+
+        <div class="services-overview">
+            <div class="services-toolbar">
+                <div>
+                    <h3>Nos services</h3>
+                    <p>Choisissez un service ou affichez tout pour consulter l'ensemble des offres.</p>
+                </div>
+                <div class="services-filter">
+                    <label for="serviceFilter">Service</label>
+                    <select id="serviceFilter" onchange="setServiceFilter(this.value)">
+                        <option value="tous">Tout</option>
+                        <option value="immobilier">Immobilier</option>
+                        <option value="art">Art</option>
+                        <option value="deal">Deal</option>
+                        <option value="courses">Courses</option>
+                        <option value="location">Location</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="servicesFeed">
+                <div class="service-block" data-service="immobilier">
+                    <div class="service-block-header">
+                        <div>
+                            <h4>Immobilier</h4>
+                            <p>Consultez les biens disponibles et contactez rapidement les annonceurs.</p>
+                        </div>
+                        <span class="service-status">Actif</span>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="filterTitle" placeholder="Quartier, ville, titre..."
+                            oninput="filterAds()">
+                        <select id="filterType" onchange="filterAds()">
+                            <option value="">Tous les types</option>
+                            <option value="Studio">Studio</option>
+                            <option value="Appartement">Appartement</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Terrain">Terrain</option>
+                        </select>
+                        <select id="filterCity" onchange="filterAds()">
+                            <option value="">Toutes les villes</option>
+                            <option value="Yaoundé">Yaoundé</option>
+                            <option value="Douala">Douala</option>
+                            <option value="Kribi">Kribi</option>
+                        </select>
+                    </div>
+                    <div class="container" id="publicAds"></div>
+                </div>
+
+                <div class="service-block" data-service="art">
+                    <div class="service-block-header">
+                        <div>
+                            <h4>Art</h4>
+                            <p>Exposez et decouvrez des creations artistiques et numeriques.</p>
+                        </div>
+                        <span class="service-status service-status-soon">Bientot</span>
+                    </div>
+                    <div class="placeholder-grid">
+                        <div class="placeholder-card">
+                            <h5>Galerie numerique</h5>
+                            <p>Decouvrez les artistes et les nouvelles collections.</p>
+                        </div>
+                        <div class="placeholder-card">
+                            <h5>Profils creatifs</h5>
+                            <p>Une vitrine pour chaque createur.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-block" data-service="deal">
+                    <div class="service-block-header">
+                        <div>
+                            <h4>Deal</h4>
+                            <p>Echangez des biens et des services entre particuliers et professionnels.</p>
+                        </div>
+                        <span class="service-status service-status-soon">Bientot</span>
+                    </div>
+                    <div class="placeholder-grid">
+                        <div class="placeholder-card">
+                            <h5>Offres locales</h5>
+                            <p>Proposez ou negociez des deals de confiance.</p>
+                        </div>
+                        <div class="placeholder-card">
+                            <h5>Communautes</h5>
+                            <p>Retrouvez des partenaires de troc ou de services.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-block" data-service="courses">
+                    <div class="service-block-header">
+                        <div>
+                            <h4>Courses</h4>
+                            <p>Centralisez vos achats et demandes du quotidien.</p>
+                        </div>
+                        <span class="service-status service-status-soon">Bientot</span>
+                    </div>
+                    <div class="placeholder-grid">
+                        <div class="placeholder-card">
+                            <h5>Besoin rapide</h5>
+                            <p>Demandez un service de courses en quelques clics.</p>
+                        </div>
+                        <div class="placeholder-card">
+                            <h5>Livraison fiable</h5>
+                            <p>Suivez vos demandes et recevez rapidement.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-block" data-service="location">
+                    <div class="service-block-header">
+                        <div>
+                            <h4>Location</h4>
+                            <p>Louez des biens, espaces ou equipements selon vos besoins.</p>
+                        </div>
+                        <span class="service-status service-status-soon">Bientot</span>
+                    </div>
+                    <div class="placeholder-grid">
+                        <div class="placeholder-card">
+                            <h5>Biens disponibles</h5>
+                            <p>Consultez les offres de location proches de vous.</p>
+                        </div>
+                        <div class="placeholder-card">
+                            <h5>Reservation rapide</h5>
+                            <p>Un processus simple pour reserver en confiance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="secEspace" class="section">
@@ -275,195 +221,66 @@
             <div id="recaptcha-container"></div>
             <button class="btn" onclick="sendOtp()">Recevoir le code</button>
             <div id="otpZone" class="hidden">
-                <input type="text" id="otpCode" placeholder="Code à 6 chiffres" style="margin-top:10px;">
+                <input type="text" id="otpCode" class="otp-input" placeholder="Code à 6 chiffres">
                 <button class="btn" onclick="verifyOtp()">Valider le code</button>
             </div>
-            <button onclick="location.reload()"
-                style="background:none; border:none; color:grey; margin-top:15px; cursor:pointer;">← Retour</button>
+            <button onclick="location.reload()" class="back-btn">← Retour</button>
         </div>
 
-        <div id="dashboard" class="auth-container hidden" style="max-width:550px">
-            <h3>➕ Publier un bien</h3>
-            <input type="text" id="title" placeholder="Titre">
-            <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA)">
-            <input type="text" id="neighborhood" placeholder="Quartier">
-            <input type="text" id="whatsapp" placeholder="WhatsApp (ex: 2376...)">
-            <select id="type">
-                <option value="Studio">Studio</option>
-                <option value="Appartement">Appartement</option>
-                <option value="Villa">Villa</option>
-                <option value="Terrain">Terrain</option>
-            </select>
-            <select id="city">
-                <option value="Yaoundé">Yaoundé</option>
-                <option value="Douala">Douala</option>
-                <option value="Kribi">Kribi</option>
-            </select>
-            <input type="file" id="imageFile" accept="image/*">
-            <button class="btn" id="btnPublish" onclick="publishAd()">Mettre en ligne l'annonce</button>
-            <hr style="margin:20px 0; opacity:0.1;">
-            <button onclick="logout()"
-                style="color:red; background:none; border:none; cursor:pointer; font-weight:bold;">Se
-                déconnecter</button>
+        <div id="dashboard" class="auth-container dashboard hidden">
+            <div class="account-panel">
+                <h3>Mon compte</h3>
+                <div class="account-grid">
+                    <div>
+                        <span>Statut</span>
+                        <strong id="accountStatus">Visiteur</strong>
+                    </div>
+                    <div>
+                        <span>Email</span>
+                        <strong id="accountEmail">-</strong>
+                    </div>
+                    <div>
+                        <span>Telephone</span>
+                        <strong id="accountPhone">-</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="account-panel">
+                <h3>Mes publications</h3>
+                <div id="userAds" class="user-ads"></div>
+            </div>
+
+            <div class="account-panel">
+                <h3>➕ Publier un bien</h3>
+                <p class="muted-text">Module immobilier actif pour publier une annonce.</p>
+                <input type="text" id="title" placeholder="Titre">
+                <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA)">
+                <input type="text" id="neighborhood" placeholder="Quartier">
+                <input type="text" id="whatsapp" placeholder="WhatsApp (ex: 2376...)">
+                <select id="type">
+                    <option value="Studio">Studio</option>
+                    <option value="Appartement">Appartement</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Terrain">Terrain</option>
+                </select>
+                <select id="city">
+                    <option value="Yaoundé">Yaoundé</option>
+                    <option value="Douala">Douala</option>
+                    <option value="Kribi">Kribi</option>
+                </select>
+                <input type="file" id="imageFile" accept="image/*">
+                <button class="btn" id="btnPublish" onclick="publishAd()">Mettre en ligne l'annonce</button>
+            </div>
+            <hr class="section-divider">
+            <div class="account-actions">
+                <button onclick="logout()" class="logout-btn">Se déconnecter</button>
+                <button onclick="deleteAccount()" class="danger-btn">Supprimer le compte</button>
+            </div>
         </div>
     </section>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyA-AUuHUKSd-keTmcLMGiWEWNoeFTANRaQ",
-            authDomain: "domaura-7052e.firebaseapp.com",
-            projectId: "domaura-7052e",
-            storageBucket: "domaura-7052e.firebasestorage.app",
-            messagingSenderId: "159613937767",
-            appId: "1:159613937767:web:986b32540f4edf5a068cc2"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        let allAds = [];
-        let confirmationResult = null;
-
-        window.showSec = (id) => {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if (id === 'secExplorer') document.getElementById('tabExplorer').classList.add('active');
-            else document.getElementById('tabEspace').classList.add('active');
-        };
-
-        // --- AUTHENTIFICATION ---
-        window.loginWithGoogle = async () => {
-            try { await signInWithPopup(auth, new GoogleAuthProvider()); }
-            catch (e) { alert("Erreur Google : " + e.code); }
-        };
-
-        window.loginWithEmail = async () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('password').value;
-            if (!e || p.length < 6) return alert("Email et mot de passe (6 car. min) requis.");
-            try {
-                await signInWithEmailAndPassword(auth, e, p);
-            } catch {
-                try { await createUserWithEmailAndPassword(auth, e, p); }
-                catch (err) { alert("Erreur : " + err.code); }
-            }
-        };
-
-        window.showPhoneInput = () => {
-            document.getElementById('authChoice').classList.add('hidden');
-            document.getElementById('phoneInputZone').classList.remove('hidden');
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'normal' });
-        };
-
-        window.sendOtp = async () => {
-            const num = document.getElementById('phoneNumber').value;
-            try {
-                confirmationResult = await signInWithPhoneNumber(auth, num, window.recaptchaVerifier);
-                document.getElementById('otpZone').classList.remove('hidden');
-                alert("SMS envoyé !");
-            } catch (e) { alert("Erreur SMS : " + e.code); }
-        };
-
-        window.verifyOtp = async () => {
-            const code = document.getElementById('otpCode').value;
-            try { await confirmationResult.confirm(code); } catch (e) { alert("Code incorrect."); }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            const status = document.getElementById('userStatus');
-            const choice = document.getElementById('authChoice');
-            const dash = document.getElementById('dashboard');
-            const phoneZone = document.getElementById('phoneInputZone');
-
-            if (user) {
-                status.innerText = user.email || user.phoneNumber || "Connecté";
-                choice.classList.add('hidden');
-                phoneZone.classList.add('hidden');
-                dash.classList.remove('hidden');
-            } else {
-                status.innerText = "Visiteur";
-                choice.classList.remove('hidden');
-                dash.classList.add('hidden');
-            }
-        });
-
-        window.logout = () => signOut(auth).then(() => location.reload());
-
-        // --- PUBLICATION ---
-        window.publishAd = async () => {
-            const titre = document.getElementById('title').value;
-            const prix = document.getElementById('price').value;
-            const quartier = document.getElementById('neighborhood').value;
-            const tel = document.getElementById('whatsapp').value;
-            const imageFile = document.getElementById('imageFile').files[0];
-            const btn = document.getElementById('btnPublish');
-
-            if (!titre || !prix || !quartier || !imageFile) return alert("Remplissez tous les champs.");
-
-            btn.disabled = true; btn.innerText = "⏳ Mise en ligne...";
-
-            try {
-                const fd = new FormData(); fd.append("image", imageFile);
-                const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", { method: "POST", body: fd });
-                const img = await res.json();
-
-                await addDoc(collection(db, "annonces"), {
-                    titre, prix, quartier, whatsapp: tel,
-                    type: document.getElementById('type').value,
-                    ville: document.getElementById('city').value,
-                    image: img.data.url,
-                    createdAt: new Date(),
-                    uid: auth.currentUser.uid
-                });
-
-                alert("Annonce publiée !");
-                location.reload();
-            } catch (e) {
-                alert("Erreur réseau.");
-                btn.disabled = false; btn.innerText = "Mettre en ligne";
-            }
-        };
-
-        // --- AFFICHAGE & FILTRES ---
-        onSnapshot(query(collection(db, "annonces"), orderBy("createdAt", "desc")), (snap) => {
-            allAds = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            renderAds(allAds);
-        });
-
-        function renderAds(ads) {
-            const container = document.getElementById('publicAds');
-            container.innerHTML = ads.map(ad => `
-                <div class="card">
-                    <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}')">
-                    <div class="card-content">
-                        <div class="price">${ad.prix}</div>
-                        <h3 style="margin:0 0 8px 0;">${ad.titre}</h3>
-                        <div class="location">📍 ${ad.quartier}, ${ad.ville} • ${ad.type}</div>
-                        <a href="https://wa.me/${ad.whatsapp.replace(/\s/g, '')}" class="btn-whatsapp" target="_blank">
-                           💬 WhatsApp
-                        </a>
-                    </div>
-                </div>`).join('');
-        }
-
-        window.filterAds = () => {
-            const queryTxt = document.getElementById('filterTitle').value.toLowerCase();
-            const type = document.getElementById('filterType').value;
-            const city = document.getElementById('filterCity').value;
-            const filtered = allAds.filter(ad => {
-                const matchesSearch = ad.titre.toLowerCase().includes(queryTxt) || ad.quartier.toLowerCase().includes(queryTxt);
-                const matchesType = type === "" || ad.type === type;
-                const matchesCity = city === "" || ad.ville === city;
-                return matchesSearch && matchesType && matchesCity;
-            });
-            renderAds(filtered);
-        };
-    </script>
+    <script type="module" src="assets/js/app.js"></script>
 </body>
 
 </html>

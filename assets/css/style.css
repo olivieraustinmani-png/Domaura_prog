@@ -63,6 +63,8 @@ header {
     background: white;
     padding: 15px;
     border-bottom: 1px solid #eee;
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
 }
 
 .nav-tabs button {
@@ -149,7 +151,8 @@ header {
 .search-bar input,
 .search-bar select,
 .auth-container input,
-.auth-container select {
+.auth-container select,
+.auth-container textarea {
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -357,6 +360,8 @@ header {
     min-height: 42vh;
     padding: 36px 5%;
     color: #fff;
+    width: min(1300px, calc(100% - 2rem));
+    margin: 0 auto;
 }
 
 .hero-copy h2 {
@@ -457,7 +462,7 @@ header {
 }
 
 .services-overview {
-    width: 95%;
+    width: min(1100px, calc(100% - 2rem));
     margin: 30px auto 60px;
 }
 
@@ -502,7 +507,7 @@ header {
 }
 
 .home-grid {
-    width: 95%;
+    width: min(1100px, calc(100% - 2rem));
     margin: 26px auto 60px;
     display: grid;
     grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
@@ -699,6 +704,15 @@ header {
 .muted-text {
     color: #666;
     margin: 0 0 14px;
+}
+
+.publish-service {
+    margin-bottom: 10px;
+}
+
+.publish-description {
+    min-height: 110px;
+    resize: vertical;
 }
 
 @media (max-width: 900px) {

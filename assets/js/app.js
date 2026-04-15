@@ -32,49 +32,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-let allAds = [];
-let confirmationResult = null;
+
+const PUBLICATIONS_COLLECTION = "annonces";
+const SERVICE_LABELS = {
+    immobilier: "Immobilier",
+    art: "Art",
+    deal: "Deal",
+    courses: "Courses",
+    location: "Location"
+};
+
+let allPublications = [];
 let currentUser = null;
 let currentServiceFilter = "tous";
-
-const servicePublications = [
-    {
-        id: "art-1",
-        service: "art",
-        title: "Tableau Eclat de Douala",
-        price: "45,000 FCFA",
-        location: "Douala",
-        description: "Collection numerique exposee par un artiste local.",
-        image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80"
-    },
-    {
-        id: "deal-1",
-        service: "deal",
-        title: "Echange smartphone contre velo",
-        price: "Deal ouvert",
-        location: "Yaounde",
-        description: "Publication communautaire pour echange de biens.",
-        image: "https://images.unsplash.com/photo-1518655048521-f130df041f66?auto=format&fit=crop&w=900&q=80"
-    },
-    {
-        id: "courses-1",
-        service: "courses",
-        title: "Course express Bastos - Melen",
-        price: "A partir de 2,000 FCFA",
-        location: "Yaounde",
-        description: "Service de courses rapides pour besoins quotidiens.",
-        image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80"
-    },
-    {
-        id: "location-1",
-        service: "location",
-        title: "Location sono evenement",
-        price: "80,000 FCFA / jour",
-        location: "Bafoussam",
-        description: "Materiel de sonorisation disponible pour ceremonies.",
-        image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
-    }
-];
+let confirmationResult = null;
 
 window.showSec = (id) => {
     document.querySelectorAll(".section").forEach((section) => section.classList.remove("active"));
@@ -101,8 +72,10 @@ window.setServiceFilter = (value) => {
     if (select) select.value = value;
     setActiveFilterButton(value);
     showSec("secServices");
+
     const menu = document.getElementById("servicesDropdown");
     if (menu && !menu.classList.contains("hidden")) menu.classList.add("hidden");
+
     renderNewsFeed();
 };
 
@@ -121,11 +94,11 @@ window.loginWithGoogle = async () => {
 };
 
 window.loginWithEmail = async () => {
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
     if (!email || password.length < 6) {
-        alert("Email et mot de passe (6 car. min) requis.");
+        alert("Email et mot de passe (6 caracteres minimum) requis.");
         return;
     }
 
@@ -148,11 +121,10 @@ window.showPhoneInput = () => {
 
 window.sendOtp = async () => {
     const phoneNumber = document.getElementById("phoneNumber").value;
-
     try {
         confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
         document.getElementById("otpZone").classList.remove("hidden");
-        alert("SMS envoyé !");
+        alert("SMS envoye.");
     } catch (error) {
         alert("Erreur SMS : " + error.code);
     }
@@ -160,7 +132,6 @@ window.sendOtp = async () => {
 
 window.verifyOtp = async () => {
     const code = document.getElementById("otpCode").value;
-
     try {
         await confirmationResult.confirm(code);
     } catch {
@@ -198,6 +169,7 @@ onAuthStateChanged(auth, (user) => {
         if (accountStatus) accountStatus.innerText = "Visiteur";
         if (accountEmail) accountEmail.innerText = "-";
         if (accountPhone) accountPhone.innerText = "-";
+        renderUserAds();
     }
 });
 
@@ -207,73 +179,113 @@ window.deleteAccount = async () => {
     if (!currentUser) return;
     const confirmDelete = confirm("Voulez-vous vraiment supprimer votre compte ?");
     if (!confirmDelete) return;
+
     try {
         await deleteUser(currentUser);
-        alert("Compte supprimé.");
+        alert("Compte supprime.");
         location.reload();
     } catch (error) {
         alert("Erreur : " + error.code);
     }
 };
 
+// Schema cible (prepare SQL): service, title, price, city, area, category, description, contact, imageUrl, ownerId, createdAt
 window.publishAd = async () => {
-    const titre = document.getElementById("title").value;
-    const prix = document.getElementById("price").value;
-    const quartier = document.getElementById("neighborhood").value;
-    const tel = document.getElementById("whatsapp").value;
-    const imageFile = document.getElementById("imageFile").files[0];
+    const service = document.getElementById("publishService").value;
+    const title = document.getElementById("publishTitle").value.trim();
+    const price = document.getElementById("publishPrice").value.trim();
+    const city = document.getElementById("publishCity").value;
+    const area = document.getElementById("publishArea").value.trim();
+    const category = document.getElementById("publishCategory").value.trim();
+    const description = document.getElementById("publishDescription").value.trim();
+    const contact = document.getElementById("publishContact").value.trim();
+    const imageFile = document.getElementById("publishImageFile").files[0];
     const btn = document.getElementById("btnPublish");
 
-    if (!titre || !prix || !quartier || !imageFile) {
-        alert("Remplissez tous les champs.");
+    if (!currentUser) {
+        alert("Connectez-vous avant de publier.");
+        return;
+    }
+
+    if (!title || !price || !description || !contact || !imageFile) {
+        alert("Veuillez renseigner les champs obligatoires.");
         return;
     }
 
     btn.disabled = true;
-    btn.innerText = "⏳ Mise en ligne...";
+    btn.innerText = "Mise en ligne...";
 
     try {
         const fd = new FormData();
         fd.append("image", imageFile);
-
-        const res = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", {
+        const uploadRes = await fetch("https://api.imgbb.com/1/upload?key=93de062740df77fd3461e203d8184f4a", {
             method: "POST",
             body: fd
         });
-        const img = await res.json();
+        const uploadData = await uploadRes.json();
+        const imageUrl = uploadData?.data?.url;
 
-        await addDoc(collection(db, "annonces"), {
-            titre,
-            prix,
-            quartier,
-            whatsapp: tel,
-            type: document.getElementById("type").value,
-            ville: document.getElementById("city").value,
-            image: img.data.url,
-            createdAt: new Date(),
-            uid: auth.currentUser.uid
+        if (!imageUrl) {
+            throw new Error("IMAGE_UPLOAD_FAILED");
+        }
+
+        await addDoc(collection(db, PUBLICATIONS_COLLECTION), {
+            service,
+            title,
+            price,
+            city,
+            area,
+            category,
+            description,
+            contact,
+            imageUrl,
+            ownerId: currentUser.uid,
+            ownerEmail: currentUser.email || "",
+            createdAt: new Date()
         });
 
-        alert("Annonce publiée !");
-        location.reload();
-    } catch {
-        alert("Erreur réseau.");
+        resetPublishForm();
+        alert("Publication enregistree.");
+    } catch (error) {
+        alert("Erreur de publication : " + (error.code || error.message || "reseau"));
+    } finally {
         btn.disabled = false;
         btn.innerText = "Mettre en ligne l'annonce";
     }
 };
 
-onSnapshot(query(collection(db, "annonces"), orderBy("createdAt", "desc")), (snap) => {
-    allAds = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+onSnapshot(query(collection(db, PUBLICATIONS_COLLECTION), orderBy("createdAt", "desc")), (snap) => {
+    allPublications = snap.docs.map((docRef) => normalizePublication(docRef.id, docRef.data()));
     renderNewsFeed();
     renderUserAds();
 });
 
+function normalizePublication(id, data) {
+    const service = (data.service || "immobilier").toLowerCase();
+    const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+
+    // Compatibilite avec anciens documents immobiliers deja stockes
+    return {
+        id,
+        service,
+        title: data.title || data.titre || "Publication",
+        price: data.price || data.prix || "Prix sur demande",
+        city: data.city || data.ville || "",
+        area: data.area || data.quartier || "",
+        category: data.category || data.type || "",
+        description: data.description || data.type || "",
+        contact: data.contact || data.whatsapp || "",
+        imageUrl: data.imageUrl || data.image || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=900&q=80",
+        ownerId: data.ownerId || data.uid || "",
+        createdAt
+    };
+}
+
 function setActiveFilterButton(value) {
     const buttons = document.querySelectorAll(".filters .filter-btn");
     buttons.forEach((button) => {
-        const match = button.getAttribute("onclick").includes(`'${value}'`);
-        if (match) button.classList.add("active-filter");
+        const isMatch = button.getAttribute("onclick").includes(`'${value}'`);
+        if (isMatch) button.classList.add("active-filter");
         else button.classList.remove("active-filter");
     });
 }
@@ -281,24 +293,29 @@ function setActiveFilterButton(value) {
 function renderUserAds() {
     const container = document.getElementById("userAds");
     if (!container) return;
+
     if (!currentUser) {
         container.innerHTML = "<p class=\"muted-text\">Connectez-vous pour voir vos publications.</p>";
         return;
     }
-    const userAds = allAds.filter((ad) => ad.uid === currentUser.uid);
-    if (!userAds.length) {
+
+    const userItems = allPublications.filter((item) => item.ownerId === currentUser.uid);
+    if (!userItems.length) {
         container.innerHTML = "<p class=\"muted-text\">Aucune publication pour le moment.</p>";
         return;
     }
-    container.innerHTML = userAds.map((ad) => `
-        <div class="card">
-            <img src="${ad.image}" onclick="alert('${ad.titre}\\n📍 ${ad.quartier}')">
+
+    container.innerHTML = userItems.map((item) => `
+        <article class="news-card">
+            <img src="${item.imageUrl}" alt="${item.title}">
             <div class="card-content">
-                <div class="price">${ad.prix}</div>
-                <h3 class="card-title">${ad.titre}</h3>
-                <div class="location">📍 ${ad.quartier}, ${ad.ville} • ${ad.type}</div>
+                <span class="news-tag">${serviceLabel(item.service)}</span>
+                <h4 class="card-title">${item.title}</h4>
+                <p class="price">${item.price}</p>
+                <p class="location">${item.area ? `${item.area}, ` : ""}${item.city}</p>
+                <p class="muted-text">${item.description}</p>
             </div>
-        </div>
+        </article>
     `).join("");
 }
 
@@ -307,24 +324,11 @@ function renderNewsFeed() {
     if (!container) return;
 
     const searchText = (document.getElementById("newsSearch")?.value || "").trim().toLowerCase();
-    const immobiliers = allAds.map((ad) => ({
-        id: ad.id,
-        service: "immobilier",
-        title: ad.titre,
-        price: ad.prix,
-        location: `${ad.quartier}, ${ad.ville}`,
-        description: ad.type,
-        image: ad.image,
-        whatsapp: ad.whatsapp || ""
-    }));
-
-    const merged = [...immobiliers, ...servicePublications];
-
-    const filtered = merged.filter((item) => {
-        const byService = currentServiceFilter === "tous" || item.service === currentServiceFilter;
-        const bySearch = !searchText ||
-            `${item.title} ${item.location} ${item.description} ${item.service}`.toLowerCase().includes(searchText);
-        return byService && bySearch;
+    const filtered = allPublications.filter((item) => {
+        const matchesService = currentServiceFilter === "tous" || item.service === currentServiceFilter;
+        const blob = `${item.title} ${item.city} ${item.area} ${item.category} ${item.description} ${item.service}`.toLowerCase();
+        const matchesSearch = !searchText || blob.includes(searchText);
+        return matchesService && matchesSearch;
     });
 
     if (!filtered.length) {
@@ -333,28 +337,39 @@ function renderNewsFeed() {
     }
 
     container.innerHTML = filtered.map((item) => {
-        const label = item.service.charAt(0).toUpperCase() + item.service.slice(1);
-        const action = item.service === "immobilier" && item.whatsapp
-            ? `<a href="https://wa.me/${item.whatsapp.replace(/\s/g, "")}" class="btn-whatsapp" target="_blank">Contacter</a>`
-            : `<button class="btn btn-secondary news-btn" onclick="showComingSoon('${label}')">Consulter</button>`;
+        const contactAction = item.contact
+            ? `<a href="https://wa.me/${item.contact.replace(/\s/g, "")}" class="btn-whatsapp" target="_blank">Contacter</a>`
+            : `<button class="btn btn-secondary news-btn" onclick="showComingSoon('${serviceLabel(item.service)}')">Consulter</button>`;
 
         return `
             <article class="news-card">
-                <img src="${item.image}" alt="${item.title}">
+                <img src="${item.imageUrl}" alt="${item.title}">
                 <div class="card-content">
-                    <span class="news-tag">${label}</span>
+                    <span class="news-tag">${serviceLabel(item.service)}</span>
                     <h4 class="card-title">${item.title}</h4>
                     <p class="price">${item.price}</p>
-                    <p class="location">${item.location}</p>
+                    <p class="location">${item.area ? `${item.area}, ` : ""}${item.city}</p>
                     <p class="muted-text">${item.description}</p>
-                    ${action}
+                    ${contactAction}
                 </div>
             </article>
         `;
     }).join("");
 }
 
-window.renderNewsFeed = renderNewsFeed;
+function serviceLabel(serviceKey) {
+    return SERVICE_LABELS[serviceKey] || "Service";
+}
+
+function resetPublishForm() {
+    document.getElementById("publishTitle").value = "";
+    document.getElementById("publishPrice").value = "";
+    document.getElementById("publishArea").value = "";
+    document.getElementById("publishCategory").value = "";
+    document.getElementById("publishDescription").value = "";
+    document.getElementById("publishContact").value = "";
+    document.getElementById("publishImageFile").value = "";
+}
 
 setActiveFilterButton("tous");
 renderNewsFeed();
@@ -366,3 +381,4 @@ document.addEventListener("click", (event) => {
     if (dropdown.contains(event.target) || trigger.contains(event.target)) return;
     dropdown.classList.add("hidden");
 });
+

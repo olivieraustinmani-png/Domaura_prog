@@ -150,24 +150,31 @@
             </div>
 
             <div class="account-panel">
-                <h3>➕ Publier un bien</h3>
-                <p class="muted-text">Module immobilier actif pour publier une annonce.</p>
-                <input type="text" id="title" placeholder="Titre">
-                <input type="text" id="price" placeholder="Prix (ex: 150.000 FCFA)">
-                <input type="text" id="neighborhood" placeholder="Quartier">
-                <input type="text" id="whatsapp" placeholder="WhatsApp (ex: 2376...)">
-                <select id="type">
-                    <option value="Studio">Studio</option>
-                    <option value="Appartement">Appartement</option>
-                    <option value="Villa">Villa</option>
-                    <option value="Terrain">Terrain</option>
+                <h3>➕ Publier une offre</h3>
+                <p class="muted-text">Schema unifie pour tous les services (pret pour une future migration SQL).</p>
+                <select id="publishService" class="publish-service">
+                    <option value="immobilier">Immobilier</option>
+                    <option value="art">Art</option>
+                    <option value="deal">Deal</option>
+                    <option value="courses">Courses</option>
+                    <option value="location">Location</option>
                 </select>
-                <select id="city">
+                <input type="text" id="publishTitle" placeholder="Titre de l'offre">
+                <input type="text" id="publishPrice" placeholder="Prix / Budget (ex: 150.000 FCFA)">
+                <select id="publishCity">
                     <option value="Yaoundé">Yaoundé</option>
                     <option value="Douala">Douala</option>
                     <option value="Kribi">Kribi</option>
+                    <option value="Bafoussam">Bafoussam</option>
+                    <option value="Garoua">Garoua</option>
+                    <option value="Bamenda">Bamenda</option>
                 </select>
-                <input type="file" id="imageFile" accept="image/*">
+                <input type="text" id="publishArea" placeholder="Quartier / Zone">
+                <input type="text" id="publishCategory" placeholder="Categorie (ex: Studio, Tableau, Livraison...)">
+                <textarea id="publishDescription" class="publish-description"
+                    placeholder="Description de l'offre"></textarea>
+                <input type="text" id="publishContact" placeholder="Contact WhatsApp / Telephone (ex: 2376...)">
+                <input type="file" id="publishImageFile" accept="image/*">
                 <button class="btn" id="btnPublish" onclick="publishAd()">Mettre en ligne l'annonce</button>
             </div>
             <hr class="section-divider">

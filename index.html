@@ -28,7 +28,6 @@
             </button>
             <div id="servicesDropdown" class="nav-dropdown-menu hidden">
                 <button onclick="setServiceFilter('tous')">Tout</button>
-                <button onclick="setservuceFilter('mobilier')"> Mobilier</button>
                 <button onclick="setServiceFilter('immobilier')">Immobilier</button>
                 <button onclick="setServiceFilter('art')">Art</button>
                 <button onclick="setServiceFilter('deal')">Deal</button>
@@ -42,162 +41,61 @@
     <section id="secServices" class="section active">
         <div class="hero">
             <div class="hero-copy">
-                <span class="hero-tag">DOMAURA Services</span>
-                <h2>Une plateforme unique pour explorer plusieurs services utiles au quotidien.</h2>
+                <span class="hero-tag">DOMAURA Cameroun</span>
+                <h2>Services connectes pour toutes les villes du Cameroun.</h2>
                 <p>
-                    DOMAURA evolue d'un prototype immobilier vers un ecosysteme multi-services connectant
-                    immobilier, art, deal, courses et location, avec une future experience premium basee
-                    sur l'inspection 3D.
+                    Explorez l'immobilier, l'art, le deal, les courses et la location depuis une seule interface.
+                    Le fil d'actualite affiche toutes les publications disponibles en temps reel.
                 </p>
-                <div class="hero-actions">
-                    <button class="btn hero-btn" onclick="showSec('secImmobilier')">Explorer l'immobilier</button>
-                    <button class="btn btn-secondary" onclick="showSec('secEspace')">Publier une offre</button>
-                </div>
             </div>
-            <div class="hero-panel">
-                <div class="hero-stat">
-                    <strong>Module actif</strong>
-                    <span>Immobilier</span>
+            <div class="hero-panel brand-panel">
+                <div class="hero-logo-wrap">
+                    <img src="assets/images/domaura-logo.png" alt="Logo DOMAURA" class="hero-logo"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hero-logo-fallback">DM</div>
                 </div>
-                <div class="hero-stat">
-                    <strong>Vision produit</strong>
-                    <span>Web + Mobile</span>
-                </div>
-                <div class="hero-stat">
-                    <strong>Evolution premium</strong>
-                    <span>Inspection 3D a distance</span>
-                </div>
+                <p class="hero-brand-text">Identite camerounaise, services modernes, experience unifiee.</p>
             </div>
         </div>
 
-        <div class="services-overview">
-            <div class="services-toolbar">
-                <div>
-                    <h3>Nos services</h3>
-                    <p>Choisissez un service ou affichez tout pour consulter l'ensemble des offres.</p>
-                </div>
-                <div class="services-filter">
-                    <label for="serviceFilter">Service</label>
-                    <select id="serviceFilter" onchange="setServiceFilter(this.value)">
-                        <option value="tous">Tout</option>
-                        <option value="immobilier">Immobilier</option>
-                        <option value="art">Art</option>
-                        <option value="deal">Deal</option>
-                        <option value="courses">Courses</option>
-                        <option value="location">Location</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="servicesFeed">
-                <div class="service-block" data-service="immobilier">
-                    <div class="service-block-header">
-                        <div>
-                            <h4>Immobilier</h4>
-                            <p>Consultez les biens disponibles et contactez rapidement les annonceurs.</p>
-                        </div>
-                        <span class="service-status">Actif</span>
+        <div class="home-grid">
+            <aside class="services-panel">
+                <div class="services-toolbar">
+                    <div>
+                        <h3>Services</h3>
+                        <p>Utilisez le menu deroulant ou les boutons pour filtrer.</p>
                     </div>
-                    <div class="search-bar">
-                        <input type="text" id="filterTitle" placeholder="Quartier, ville, titre..."
-                            oninput="filterAds()">
-                        <select id="filterType" onchange="filterAds()">
-                            <option value="">Tous les types</option>
-                            <option value="Studio">Studio</option>
-                            <option value="Appartement">Appartement</option>
-                            <option value="Villa">Villa</option>
-                            <option value="Terrain">Terrain</option>
-                        </select>
-                        <select id="filterCity" onchange="filterAds()">
-                            <option value="">Toutes les villes</option>
-                            <option value="Yaoundé">Yaoundé</option>
-                            <option value="Douala">Douala</option>
-                            <option value="Kribi">Kribi</option>
+                    <div class="services-filter">
+                        <label for="serviceFilter">Service</label>
+                        <select id="serviceFilter" onchange="setServiceFilter(this.value)">
+                            <option value="tous">Tout</option>
+                            <option value="immobilier">Immobilier</option>
+                            <option value="art">Art</option>
+                            <option value="deal">Deal</option>
+                            <option value="courses">Courses</option>
+                            <option value="location">Location</option>
                         </select>
                     </div>
-                    <div class="container" id="publicAds"></div>
                 </div>
 
-                <div class="service-block" data-service="art">
-                    <div class="service-block-header">
-                        <div>
-                            <h4>Art</h4>
-                            <p>Exposez et decouvrez des creations artistiques et numeriques.</p>
-                        </div>
-                        <span class="service-status service-status-soon">Bientot</span>
-                    </div>
-                    <div class="placeholder-grid">
-                        <div class="placeholder-card">
-                            <h5>Galerie numerique</h5>
-                            <p>Decouvrez les artistes et les nouvelles collections.</p>
-                        </div>
-                        <div class="placeholder-card">
-                            <h5>Profils creatifs</h5>
-                            <p>Une vitrine pour chaque createur.</p>
-                        </div>
-                    </div>
+                <div class="filters services-filters">
+                    <button class="filter-btn active-filter" onclick="setServiceFilter('tous')">Tout</button>
+                    <button class="filter-btn" onclick="setServiceFilter('immobilier')">Immobilier</button>
+                    <button class="filter-btn" onclick="setServiceFilter('art')">Art</button>
+                    <button class="filter-btn" onclick="setServiceFilter('deal')">Deal</button>
+                    <button class="filter-btn" onclick="setServiceFilter('courses')">Courses</button>
+                    <button class="filter-btn" onclick="setServiceFilter('location')">Location</button>
                 </div>
+            </aside>
 
-                <div class="service-block" data-service="deal">
-                    <div class="service-block-header">
-                        <div>
-                            <h4>Deal</h4>
-                            <p>Echangez des biens et des services entre particuliers et professionnels.</p>
-                        </div>
-                        <span class="service-status service-status-soon">Bientot</span>
-                    </div>
-                    <div class="placeholder-grid">
-                        <div class="placeholder-card">
-                            <h5>Offres locales</h5>
-                            <p>Proposez ou negociez des deals de confiance.</p>
-                        </div>
-                        <div class="placeholder-card">
-                            <h5>Communautes</h5>
-                            <p>Retrouvez des partenaires de troc ou de services.</p>
-                        </div>
-                    </div>
+            <section class="news-panel">
+                <div class="news-head">
+                    <h3>Fil d'actualite</h3>
+                    <input type="text" id="newsSearch" class="news-search"
+                        placeholder="Rechercher une publication, ville, service..." oninput="renderNewsFeed()">
                 </div>
-
-                <div class="service-block" data-service="courses">
-                    <div class="service-block-header">
-                        <div>
-                            <h4>Courses</h4>
-                            <p>Centralisez vos achats et demandes du quotidien.</p>
-                        </div>
-                        <span class="service-status service-status-soon">Bientot</span>
-                    </div>
-                    <div class="placeholder-grid">
-                        <div class="placeholder-card">
-                            <h5>Besoin rapide</h5>
-                            <p>Demandez un service de courses en quelques clics.</p>
-                        </div>
-                        <div class="placeholder-card">
-                            <h5>Livraison fiable</h5>
-                            <p>Suivez vos demandes et recevez rapidement.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-block" data-service="location">
-                    <div class="service-block-header">
-                        <div>
-                            <h4>Location</h4>
-                            <p>Louez des biens, espaces ou equipements selon vos besoins.</p>
-                        </div>
-                        <span class="service-status service-status-soon">Bientot</span>
-                    </div>
-                    <div class="placeholder-grid">
-                        <div class="placeholder-card">
-                            <h5>Biens disponibles</h5>
-                            <p>Consultez les offres de location proches de vous.</p>
-                        </div>
-                        <div class="placeholder-card">
-                            <h5>Reservation rapide</h5>
-                            <p>Un processus simple pour reserver en confiance.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div id="newsFeed" class="news-feed"></div>
+            </section>
         </div>
     </section>
 

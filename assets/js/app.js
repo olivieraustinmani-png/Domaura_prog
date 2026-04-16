@@ -68,6 +68,7 @@ let allPublications = [];
 let currentUser = null;
 let currentServiceFilter = "tous";
 let confirmationResult = null;
+let fallbackListenerAttached = false;
 
 window.showSec = (id) => {
     document.querySelectorAll(".section").forEach((section) => section.classList.remove("active"));
@@ -261,7 +262,7 @@ window.publishAd = async () => {
             throw new Error("IMAGE_UPLOAD_FAILED");
         }
 
-        await addDoc(collection(db, PUBLICATIONS_COLLECTION), {
+        const payload = {
             service,
             title,
             price,
@@ -277,7 +278,9 @@ window.publishAd = async () => {
             source: "web",
             createdAt: new Date(),
             updatedAt: new Date()
-        });
+        };
+
+        const docRef = await addDoc(collection(db, PUBLICATIONS_COLLECTION), payload);
 
         resetPublishForm();
         // Evite l'impression de "publication disparue" si un filtre/recherche etait actif.
@@ -287,9 +290,12 @@ window.publishAd = async () => {
         const searchInput = document.getElementById("newsSearch");
         if (searchInput) searchInput.value = "";
         setActiveFilterButton("tous");
+        // Affichage optimiste immediat, sans attendre la propagation du listener.
+        upsertPublication(normalizePublication(docRef.id, payload));
         alert("Publication enregistree.");
         showSec("secServices");
         renderNewsFeed();
+        renderUserAds();
     } catch (error) {
         alert("Erreur de publication : " + (error.code || error.message || "reseau"));
     } finally {
@@ -298,11 +304,29 @@ window.publishAd = async () => {
     }
 };
 
-onSnapshot(query(collection(db, PUBLICATIONS_COLLECTION), orderBy("createdAt", "desc")), (snap) => {
+attachPublicationsListener();
+
+function attachPublicationsListener() {
+    const ref = collection(db, PUBLICATIONS_COLLECTION);
+    const ordered = query(ref, orderBy("createdAt", "desc"));
+
+    onSnapshot(ordered, (snap) => {
+        hydratePublicationsFromSnapshot(snap);
+    }, () => {
+        if (fallbackListenerAttached) return;
+        fallbackListenerAttached = true;
+        onSnapshot(ref, (snap) => {
+            hydratePublicationsFromSnapshot(snap);
+        });
+    });
+}
+
+function hydratePublicationsFromSnapshot(snap) {
     allPublications = snap.docs.map((docRef) => normalizePublication(docRef.id, docRef.data()));
+    sortPublications();
     renderNewsFeed();
     renderUserAds();
-});
+}
 
 function normalizePublication(id, data) {
     const service = (data.service || "immobilier").toLowerCase();
@@ -323,6 +347,24 @@ function normalizePublication(id, data) {
         ownerId: data.ownerId || data.uid || "",
         createdAt
     };
+}
+
+function upsertPublication(item) {
+    const index = allPublications.findIndex((p) => p.id === item.id);
+    if (index >= 0) {
+        allPublications[index] = item;
+    } else {
+        allPublications.unshift(item);
+    }
+    sortPublications();
+}
+
+function sortPublications() {
+    allPublications.sort((a, b) => {
+        const da = a.createdAt instanceof Date ? a.createdAt.getTime() : 0;
+        const db = b.createdAt instanceof Date ? b.createdAt.getTime() : 0;
+        return db - da;
+    });
 }
 
 function setActiveFilterButton(value) {

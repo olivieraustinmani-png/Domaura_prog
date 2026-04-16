@@ -41,6 +41,28 @@ const SERVICE_LABELS = {
     courses: "Courses",
     location: "Location"
 };
+const SERVICE_RULES = {
+    immobilier: {
+        hint: "Immobilier : ajoute un quartier, une categorie claire et un prix precis.",
+        required: ["area", "category"]
+    },
+    art: {
+        hint: "Art : precise le type d'oeuvre (peinture, design, NFT...) et une description detaillee.",
+        required: ["category"]
+    },
+    deal: {
+        hint: "Deal : decris clairement ce que tu proposes et ce que tu recherches.",
+        required: ["description"]
+    },
+    courses: {
+        hint: "Courses : indique la zone desservie et le type de course disponible.",
+        required: ["area"]
+    },
+    location: {
+        hint: "Location : precise la duree, la zone et le type de bien a louer.",
+        required: ["area", "category"]
+    }
+};
 
 let allPublications = [];
 let currentUser = null;
@@ -198,7 +220,7 @@ window.publishAd = async () => {
     const area = document.getElementById("publishArea").value.trim();
     const category = document.getElementById("publishCategory").value.trim();
     const description = document.getElementById("publishDescription").value.trim();
-    const contact = document.getElementById("publishContact").value.trim();
+    const contact = normalizeContact(document.getElementById("publishContact").value);
     const imageFile = document.getElementById("publishImageFile").files[0];
     const btn = document.getElementById("btnPublish");
 
@@ -209,6 +231,16 @@ window.publishAd = async () => {
 
     if (!title || !price || !description || !contact || !imageFile) {
         alert("Veuillez renseigner les champs obligatoires.");
+        return;
+    }
+
+    const rules = SERVICE_RULES[service];
+    if (rules?.required.includes("area") && !area) {
+        alert("Ce service demande une zone/quartier.");
+        return;
+    }
+    if (rules?.required.includes("category") && !category) {
+        alert("Ce service demande une categorie.");
         return;
     }
 
@@ -241,7 +273,10 @@ window.publishAd = async () => {
             imageUrl,
             ownerId: currentUser.uid,
             ownerEmail: currentUser.email || "",
-            createdAt: new Date()
+            schemaVersion: 1,
+            source: "web",
+            createdAt: new Date(),
+            updatedAt: new Date()
         });
 
         resetPublishForm();
@@ -314,6 +349,7 @@ function renderUserAds() {
                 <p class="price">${item.price}</p>
                 <p class="location">${item.area ? `${item.area}, ` : ""}${item.city}</p>
                 <p class="muted-text">${item.description}</p>
+                <p class="news-time">Publie le ${formatCreatedAt(item.createdAt)}</p>
             </div>
         </article>
     `).join("");
@@ -338,7 +374,7 @@ function renderNewsFeed() {
 
     container.innerHTML = filtered.map((item) => {
         const contactAction = item.contact
-            ? `<a href="https://wa.me/${item.contact.replace(/\s/g, "")}" class="btn-whatsapp" target="_blank">Contacter</a>`
+            ? `<a href="${whatsappUrl(item.contact)}" class="btn-whatsapp" target="_blank">Contacter</a>`
             : `<button class="btn btn-secondary news-btn" onclick="showComingSoon('${serviceLabel(item.service)}')">Consulter</button>`;
 
         return `
@@ -350,6 +386,7 @@ function renderNewsFeed() {
                     <p class="price">${item.price}</p>
                     <p class="location">${item.area ? `${item.area}, ` : ""}${item.city}</p>
                     <p class="muted-text">${item.description}</p>
+                    <p class="news-time">Publie le ${formatCreatedAt(item.createdAt)}</p>
                     ${contactAction}
                 </div>
             </article>
@@ -371,8 +408,38 @@ function resetPublishForm() {
     document.getElementById("publishImageFile").value = "";
 }
 
+function normalizeContact(value) {
+    return (value || "").replace(/[^\d]/g, "");
+}
+
+function whatsappUrl(contact) {
+    const clean = normalizeContact(contact);
+    return `https://wa.me/${clean}`;
+}
+
+function formatCreatedAt(dateValue) {
+    if (!dateValue || !(dateValue instanceof Date) || Number.isNaN(dateValue.getTime())) {
+        return "date inconnue";
+    }
+    return dateValue.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+}
+
+function updatePublishHint() {
+    const service = document.getElementById("publishService")?.value || "immobilier";
+    const hintNode = document.getElementById("publishHint");
+    if (!hintNode) return;
+    hintNode.innerText = SERVICE_RULES[service]?.hint || "";
+}
+
 setActiveFilterButton("tous");
 renderNewsFeed();
+updatePublishHint();
+
+document.getElementById("publishService")?.addEventListener("change", updatePublishHint);
 
 document.addEventListener("click", (event) => {
     const dropdown = document.getElementById("servicesDropdown");
@@ -381,4 +448,3 @@ document.addEventListener("click", (event) => {
     if (dropdown.contains(event.target) || trigger.contains(event.target)) return;
     dropdown.classList.add("hidden");
 });
-

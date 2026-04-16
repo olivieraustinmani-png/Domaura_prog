@@ -280,7 +280,16 @@ window.publishAd = async () => {
         });
 
         resetPublishForm();
+        // Evite l'impression de "publication disparue" si un filtre/recherche etait actif.
+        currentServiceFilter = "tous";
+        const select = document.getElementById("serviceFilter");
+        if (select) select.value = "tous";
+        const searchInput = document.getElementById("newsSearch");
+        if (searchInput) searchInput.value = "";
+        setActiveFilterButton("tous");
         alert("Publication enregistree.");
+        showSec("secServices");
+        renderNewsFeed();
     } catch (error) {
         alert("Erreur de publication : " + (error.code || error.message || "reseau"));
     } finally {
@@ -409,7 +418,7 @@ function resetPublishForm() {
 }
 
 function normalizeContact(value) {
-    return (value || "").replace(/[^\d]/g, "");
+    return String(value ?? "").replace(/[^\d]/g, "");
 }
 
 function whatsappUrl(contact) {

@@ -294,7 +294,9 @@ window.publishAd = async () => {
         upsertPublication(normalizePublication(docRef.id, payload));
         alert("Publication enregistree.");
         showSec("secServices");
+        document.getElementById("liveUserFeedSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
         renderNewsFeed();
+        renderLiveUserFeed();
         renderUserAds();
     } catch (error) {
         alert("Erreur de publication : " + (error.code || error.message || "reseau"));
@@ -325,6 +327,7 @@ function hydratePublicationsFromSnapshot(snap) {
     allPublications = snap.docs.map((docRef) => normalizePublication(docRef.id, docRef.data()));
     sortPublications();
     renderNewsFeed();
+    renderLiveUserFeed();
     renderUserAds();
 }
 
@@ -445,6 +448,32 @@ function renderNewsFeed() {
     }).join("");
 }
 
+function renderLiveUserFeed() {
+    const container = document.getElementById("liveUserFeed");
+    const countNode = document.getElementById("liveUserCount");
+    if (!container || !countNode) return;
+
+    const userItems = allPublications
+        .filter((item) => Boolean(item.ownerId))
+        .slice(0, 8);
+
+    countNode.innerText = String(userItems.length);
+
+    if (!userItems.length) {
+        container.innerHTML = "<p class=\"muted-text\">Aucune publication utilisateur en direct pour le moment.</p>";
+        return;
+    }
+
+    container.innerHTML = userItems.map((item) => `
+        <article class="live-item">
+            <span class="news-tag">${serviceLabel(item.service)}</span>
+            <h4 class="live-item-title">${item.title}</h4>
+            <p class="live-item-meta">${item.area ? `${item.area}, ` : ""}${item.city}</p>
+            <p class="live-item-meta">Publie le ${formatCreatedAt(item.createdAt)}</p>
+        </article>
+    `).join("");
+}
+
 function serviceLabel(serviceKey) {
     return SERVICE_LABELS[serviceKey] || "Service";
 }
@@ -488,6 +517,7 @@ function updatePublishHint() {
 
 setActiveFilterButton("tous");
 renderNewsFeed();
+renderLiveUserFeed();
 updatePublishHint();
 
 document.getElementById("publishService")?.addEventListener("change", updatePublishHint);

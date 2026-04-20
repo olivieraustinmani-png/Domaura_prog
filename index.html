@@ -33,6 +33,7 @@
                 <button onclick="setServiceFilter('deal')">Deal</button>
                 <button onclick="setServiceFilter('courses')">Courses</button>
                 <button onclick="setServiceFilter('location')">Location</button>
+                <button ondblclick="setServiceFilter('shoping')">Shoping</button>
             </div>
         </div>
         <button data-section="secEspace" onclick="showSec('secEspace')">👤 Mon Espace</button>
@@ -43,10 +44,12 @@
             <div class="hero-copy">
                 <span class="hero-tag">DOMAURA Cameroun</span>
                 <h2>Services connectes pour toutes les villes du Cameroun.</h2>
-                <p>
-                    Explorez l'immobilier, l'art, le deal, les courses et la location depuis une seule interface.
-                    Le fil d'actualite affiche toutes les publications disponibles en temps reel.
-                </p>
+                <article>
+                    <p>
+                        Explorez l'immobilier, l'art, le deal, les courses et la location depuis une seule interface.
+                        Le fil d'actualite affiche toutes les publications disponibles en temps reel.
+                    </p>
+                </article>
             </div>
             <div class="hero-panel brand-panel">
                 <div class="hero-logo-wrap">
@@ -77,15 +80,17 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="filters services-filters">
-                    <button class="filter-btn active-filter" onclick="setServiceFilter('tous')">Tout</button>
-                    <button class="filter-btn" onclick="setServiceFilter('immobilier')">Immobilier</button>
-                    <button class="filter-btn" onclick="setServiceFilter('art')">Art</button>
-                    <button class="filter-btn" onclick="setServiceFilter('deal')">Deal</button>
-                    <button class="filter-btn" onclick="setServiceFilter('courses')">Courses</button>
-                    <button class="filter-btn" onclick="setServiceFilter('location')">Location</button>
-                </div>
+                <!-- je viens d'ajouter nav, pour voir la différence quand on l'assoicie à div-->
+                <nav>
+                    <div class="filters services-filters">
+                        <button class="filter-btn active-filter" onclick="setServiceFilter('tous')">Tout</button>
+                        <button class="filter-btn" onclick="setServiceFilter('immobilier')">Immobilier</button>
+                        <button class="filter-btn" onclick="setServiceFilter('art')">Art</button>
+                        <button class="filter-btn" onclick="setServiceFilter('deal')">Deal</button>
+                        <button class="filter-btn" onclick="setServiceFilter('courses')">Courses</button>
+                        <button class="filter-btn" onclick="setServiceFilter('location')">Location</button>
+                    </div>
+                </nav>
             </aside>
 
             <section class="news-panel">

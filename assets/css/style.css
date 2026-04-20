@@ -47,7 +47,7 @@ header {
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .header-btn {
@@ -440,14 +440,14 @@ header {
 .hero-logo {
     max-width: 88px;
     max-height: 88px;
-    border-radius: 16px;
+    border-radius: 12px;
 }
 
 .hero-logo-fallback {
     width: 88px;
     height: 88px;
     border-radius: 18px;
-    background: #fff;
+    background: #e8dd0bfe;
     color: #111827;
     font-size: 2rem;
     font-weight: 700;

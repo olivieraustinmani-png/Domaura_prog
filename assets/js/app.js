@@ -332,7 +332,7 @@ function hydratePublicationsFromSnapshot(snap) {
 }
 
 function normalizePublication(id, data) {
-    const service = (data.service || "immobilier").toLowerCase();
+    const service = (data.service || "").toLowerCase();
     const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
 
     // Compatibilite avec anciens documents immobiliers deja stockes
